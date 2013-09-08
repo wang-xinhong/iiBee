@@ -1,4 +1,4 @@
 iiBee
 =====
 
-iiBee - Automation with reboots
+Automation with reboots
