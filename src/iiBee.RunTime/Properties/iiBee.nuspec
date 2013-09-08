@@ -7,7 +7,7 @@
     <owners>Armin Kogler</owners>
     <licenseUrl>https://github.com/AbraxasCSharp/iiBee/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/AbraxasCSharp/iiBee</projectUrl>
-    <iconUrl>https://de.gravatar.com/userimage/54969021/256c90662ba42c779fd465af070be9aa.png</iconUrl>
+    <iconUrl>https://github.com/AbraxasCSharp/iiBee/blob/master/common/Icon.ico</iconUrl>
     <description>Automation with WF.net</description>
     <tags>iibee WF .net</tags>
     <frameworkAssemblies>
