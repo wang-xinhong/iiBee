@@ -22,6 +22,9 @@
     <SccProvider>
     </SccProvider>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\..\common\Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
@@ -65,6 +68,12 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\common\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\common\CommonVersionInfo.cs">
+      <Link>Properties\CommonVersionInfo.cs</Link>
+    </Compile>
     <Compile Include="XmlInstanceStore\AsyncResult.cs" />
     <Compile Include="XmlInstanceStore\CompletedAsyncResult.cs" />
     <Compile Include="XmlInstanceStore\IOHelper.cs" />
@@ -72,6 +81,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Properties\chocolateyUninstall.ps1" />
+    <None Include="Properties\chocolateyInstall.ps1" />
+    <None Include="Properties\iiBee.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\common\Icon.ico">
+      <Link>Properties\Icon.ico</Link>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\iiBee.RunTime.Library\iiBee.RunTime.Library.csproj">

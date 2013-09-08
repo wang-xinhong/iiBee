@@ -1,0 +1,27 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>iiBee</id>
+    <version>$version$</version>
+    <authors>Armin Kogler</authors>
+    <owners>Armin Kogler</owners>
+    <licenseUrl>https://github.com/AbraxasCSharp/iiBee/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/AbraxasCSharp/iiBee</projectUrl>
+    <iconUrl>https://de.gravatar.com/userimage/54969021/256c90662ba42c779fd465af070be9aa.png</iconUrl>
+    <description>Automation with WF.net</description>
+    <tags>iibee WF .net</tags>
+    <frameworkAssemblies>
+    </frameworkAssemblies>
+    <dependencies>
+      <dependency id="NuGet.CommandLine" version="2.5.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Properties\chocolateyInstall.ps1" target="tools" />
+    <file src="Properties\chocolateyUninstall.ps1" target="tools" />
+    <file src="bin\$configuration$\iiBee.RunTime.exe" target="tools/iiBee" />
+    <file src="bin\$configuration$\iiBee.RunTime.exe.config" target="tools/iiBee" />
+    <file src="bin\$configuration$\*.dll" target="tools/iiBee" />
+    <file src="bin\$configuration$\*.pdb" target="tools/iiBee" />
+  </files>
+</package>
