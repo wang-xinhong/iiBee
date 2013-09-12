@@ -1,4 +1,5 @@
 ﻿using iiBee.RunTime.Library.Activities;
+using NLog;
 using System;
 using System.Activities;
 using System.Activities.DurableInstancing;
@@ -15,11 +16,53 @@ using WF4Samples.WF4Persistence;
 
 namespace iiBee.RunTime
 {
-
     class Program
     {
+        static Logger log = LogManager.GetCurrentClassLogger();
+        static TemporaryStorage storage = new TemporaryStorage(new FileInfo(
+                Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
+                "StoredWF.xaml")));
+
         static void Main(string[] args)
         {
+            StartParameters startParams = new StartParameters(args);
+
+            WorkflowRunner wfRunner = null;
+            if (storage.WorkflowIsStored())
+            {
+                FileInfo wfFile = storage.StoredWorkflowFile;
+                wfRunner = new WorkflowRunner(wfFile);
+            }
+            else if (startParams.HasParameters)
+            {
+                wfRunner = new WorkflowRunner(startParams.WorkflowFile);
+            }
+            else
+            {
+                log.Info("No workflow file to execute, stopping application");
+                Environment.Exit(ExitCodes.HaveDoneNothing);
+            }
+
+            ExitReaction reaction = wfRunner.RunWorkflow();
+            if (reaction == ExitReaction.Reboot)
+            {
+                if(startParams.HasParameters) //otherwise it is already stored
+                    storage.StoreWorkflow(startParams.WorkflowFile);
+
+                log.Info("Preparing for system reboot");
+                SendRebootCommand();
+                Environment.Exit(ExitCodes.ClosedForReboot);
+            }
+            else if (reaction == ExitReaction.Finished)
+            {
+                storage.RemoveStoredWorkflow();
+
+                log.Info("Finished workflow, application is stopping");
+                Environment.Exit(ExitCodes.FinishedSuccessfully);
+            }
+
+            //TODO: Move this code to WorkflowRunner
             //Generate Instance Store
             DirectoryInfo workingDir = new DirectoryInfo(ConfigurationManager.AppSettings["WF4DataFolderDirectory"] + "WF4DataFolder");
             FileInfo rebootFile = new FileInfo(".\\reboot");
@@ -103,6 +146,41 @@ namespace iiBee.RunTime
 
             if (SetRebootFlag.RebootPending)
                 SendRebootCommand();
+        }
+
+        private static void RemoveStoredWorkflowFile()
+        {
+            
+        }
+
+        private static void StoreWorkflowFile(FileInfo fileInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void StoreWorkflowFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static FileInfo GetStoredWorkflowFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void LoadStoredWorkflow()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static bool WorkflowIsStored()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void LoadNewWorkflow(FileInfo fileInfo)
+        {
+            throw new NotImplementedException();
         }
 
         private static void SendRebootCommand()
