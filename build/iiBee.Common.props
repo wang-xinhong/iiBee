@@ -23,7 +23,7 @@
     
     <DefineConstants>TRACE;$(DefineConstants)</DefineConstants>
 
-    <CodeAnalysisRuleSet>$(SolutionDir)ScriptCs.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(SolutionDir)iiBee.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis Condition=" '$(RunCodeAnalysis)' == '' " >false</RunCodeAnalysis>
   </PropertyGroup>
 
