@@ -32,11 +32,11 @@ namespace iiBee.RunTime
             if (storage.WorkflowIsStored())
             {
                 FileInfo wfFile = storage.StoredWorkflowFile;
-                wfRunner = new WorkflowRunner(wfFile);
+                wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"], wfFile);
             }
             else if (startParams.HasParameters)
             {
-                wfRunner = new WorkflowRunner(startParams.WorkflowFile);
+                wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"], startParams.WorkflowFile);
             }
             else
             {

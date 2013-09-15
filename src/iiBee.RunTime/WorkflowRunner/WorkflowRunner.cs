@@ -23,10 +23,10 @@ namespace iiBee.RunTime
         private Guid _WorkflowId = new Guid("50863C72-3ABA-4631-8995-0ACA0385B7A3");
         private WorkflowApplication _WorkflowApp = null;
 
-        public WorkflowRunner(FileInfo workflow)
+        public WorkflowRunner(string dataFolder, FileInfo workflow)
         {
             _WorkingDirectory = new DirectoryInfo(
-                ConfigurationManager.AppSettings["WF4DataFolderDirectory"] + "WF4DataFolder");
+                dataFolder + "WF4DataFolder");
 
             DynamicActivity wf = LoadWorkflow(workflow.FullName);
             _WorkflowApp = new WorkflowApplication(wf);
