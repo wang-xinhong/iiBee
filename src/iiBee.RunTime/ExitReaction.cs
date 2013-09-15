@@ -8,6 +8,8 @@ namespace iiBee.RunTime
     public enum ExitReaction
     {
         Reboot,
-        Finished
+        Finished,
+        ErrorLoading,
+        ErrorExecuting
     }
 }

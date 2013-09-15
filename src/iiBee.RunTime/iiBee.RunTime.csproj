@@ -83,11 +83,11 @@
     </Compile>
     <Compile Include="StartParameters.cs" />
     <Compile Include="TemporaryStorage.cs" />
-    <Compile Include="WorkflowRunner.cs" />
-    <Compile Include="XmlInstanceStore\AsyncResult.cs" />
-    <Compile Include="XmlInstanceStore\CompletedAsyncResult.cs" />
-    <Compile Include="XmlInstanceStore\IOHelper.cs" />
-    <Compile Include="XmlInstanceStore\XmlWorkflowInstanceStore.cs" />
+    <Compile Include="WorkflowRunner\WorkflowRunner.cs" />
+    <Compile Include="WorkflowRunner\XmlInstanceStore\AsyncResult.cs" />
+    <Compile Include="WorkflowRunner\XmlInstanceStore\CompletedAsyncResult.cs" />
+    <Compile Include="WorkflowRunner\XmlInstanceStore\IOHelper.cs" />
+    <Compile Include="WorkflowRunner\XmlInstanceStore\XmlWorkflowInstanceStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

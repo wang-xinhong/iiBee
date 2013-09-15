@@ -47,7 +47,7 @@ namespace iiBee.RunTime
             ExitReaction reaction = wfRunner.RunWorkflow();
             if (reaction == ExitReaction.Reboot)
             {
-                if(startParams.HasParameters) //otherwise it is already stored
+                if (startParams.HasParameters) //otherwise it is already stored
                     storage.StoreWorkflow(startParams.WorkflowFile);
 
                 log.Info("Preparing for system reboot");
@@ -61,128 +61,94 @@ namespace iiBee.RunTime
                 log.Info("Finished workflow, application is stopping");
                 Environment.Exit(ExitCodes.FinishedSuccessfully);
             }
+        }
 
             //TODO: Move this code to WorkflowRunner
             //Generate Instance Store
-            DirectoryInfo workingDir = new DirectoryInfo(ConfigurationManager.AppSettings["WF4DataFolderDirectory"] + "WF4DataFolder");
-            FileInfo rebootFile = new FileInfo(".\\reboot");
-            string workflowfile = ".\\StartAllSySeTestsWorkflow.xaml";
+        //    DirectoryInfo workingDir = new DirectoryInfo(ConfigurationManager.AppSettings["WF4DataFolderDirectory"] + "WF4DataFolder");
+        //    FileInfo rebootFile = new FileInfo(".\\reboot");
+        //    string workflowfile = ".\\StartAllSySeTestsWorkflow.xaml";
 
-            //Create Workflow
-            if (!rebootFile.Exists)
-            {
-                Console.WriteLine("Press <enter> to start the workflow");
-                Console.ReadLine();
+        //    //Create Workflow
+        //    if (!rebootFile.Exists)
+        //    {
+        //        Console.WriteLine("Press <enter> to start the workflow");
+        //        Console.ReadLine();
 
-                foreach (FileInfo file in workingDir.GetFiles())
-                {
-                    file.Delete();
-                }
+        //        foreach (FileInfo file in workingDir.GetFiles())
+        //        {
+        //            file.Delete();
+        //        }
 
-                AutoResetEvent waitHandler = new AutoResetEvent(false);
-                DynamicActivity wf = LoadWorkflow(workflowfile);
-                WorkflowApplication wfApp = new WorkflowApplication(wf);
-                XmlWorkflowInstanceStore instanceStore = SetupXmlpersistenceStore(wfApp.Id);
+        //        AutoResetEvent waitHandler = new AutoResetEvent(false);
+        //        DynamicActivity wf = LoadWorkflow(workflowfile);
+        //        WorkflowApplication wfApp = new WorkflowApplication(wf);
+        //        XmlWorkflowInstanceStore instanceStore = SetupXmlpersistenceStore(wfApp.Id);
 
-                wfApp.InstanceStore = instanceStore;
-                ///persists application state and remove it from memory    
-                wfApp.PersistableIdle = (e) =>
-                {
-                    if (SetRebootFlag.RebootPending)
-                    {
-                        rebootFile.Create().Close();
-                        return PersistableIdleAction.Unload;
-                    }
-                    else
-                        return PersistableIdleAction.None;
-                };
-                wfApp.Unloaded = (e) =>
-                {
-                    Console.WriteLine("unload");
-                    waitHandler.Set();
-                };
-                wfApp.Run();
-                waitHandler.WaitOne();
-            }
-            else
-            {
-                Console.WriteLine("Press <enter> to continue the workflow");
-                Console.ReadLine();
+        //        wfApp.InstanceStore = instanceStore;
+        //        ///persists application state and remove it from memory    
+        //        wfApp.PersistableIdle = (e) =>
+        //        {
+        //            if (SetRebootFlag.RebootPending)
+        //            {
+        //                rebootFile.Create().Close();
+        //                return PersistableIdleAction.Unload;
+        //            }
+        //            else
+        //                return PersistableIdleAction.None;
+        //        };
+        //        wfApp.Unloaded = (e) =>
+        //        {
+        //            Console.WriteLine("unload");
+        //            waitHandler.Set();
+        //        };
+        //        wfApp.Run();
+        //        waitHandler.WaitOne();
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Press <enter> to continue the workflow");
+        //        Console.ReadLine();
 
-                rebootFile.Delete();
-                FileInfo file = workingDir.GetFiles().Single();
-                string guidstring = Path.GetFileNameWithoutExtension(file.FullName);
-                Guid id = new Guid(guidstring);
+        //        rebootFile.Delete();
+        //        FileInfo file = workingDir.GetFiles().Single();
+        //        string guidstring = Path.GetFileNameWithoutExtension(file.FullName);
+        //        Guid id = new Guid(guidstring);
 
-                AutoResetEvent waitHandler = new AutoResetEvent(false);
-                Activity wf = LoadWorkflow(workflowfile);
-                WorkflowApplication wfApp = new WorkflowApplication(wf);
-                wfApp.InstanceStore = SetupXmlpersistenceStore(id);
+        //        AutoResetEvent waitHandler = new AutoResetEvent(false);
+        //        Activity wf = LoadWorkflow(workflowfile);
+        //        WorkflowApplication wfApp = new WorkflowApplication(wf);
+        //        wfApp.InstanceStore = SetupXmlpersistenceStore(id);
 
-                wfApp.Completed = (workflowApplicationCompletedEventArgs) =>
-                {
-                    Console.WriteLine("\nWorkflowApplication has Completed in the {0} state.", workflowApplicationCompletedEventArgs.CompletionState);
-                };
-                wfApp.PersistableIdle = (e) =>
-                {
-                    if (SetRebootFlag.RebootPending)
-                    {
-                        rebootFile.Create().Close();
-                        return PersistableIdleAction.Unload;
-                    }
-                    else
-                        return PersistableIdleAction.None;
-                };
-                wfApp.Unloaded = (workflowApplicationEventArgs) =>
-                {
-                    Console.WriteLine("WorkflowApplication has Unloaded\n");
-                    waitHandler.Set();
-                };
+        //        wfApp.Completed = (workflowApplicationCompletedEventArgs) =>
+        //        {
+        //            Console.WriteLine("\nWorkflowApplication has Completed in the {0} state.", workflowApplicationCompletedEventArgs.CompletionState);
+        //        };
+        //        wfApp.PersistableIdle = (e) =>
+        //        {
+        //            if (SetRebootFlag.RebootPending)
+        //            {
+        //                rebootFile.Create().Close();
+        //                return PersistableIdleAction.Unload;
+        //            }
+        //            else
+        //                return PersistableIdleAction.None;
+        //        };
+        //        wfApp.Unloaded = (workflowApplicationEventArgs) =>
+        //        {
+        //            Console.WriteLine("WorkflowApplication has Unloaded\n");
+        //            waitHandler.Set();
+        //        };
 
-                wfApp.Load(id);
-                wfApp.Run();
-                waitHandler.WaitOne();
-            }
+        //        wfApp.Load(id);
+        //        wfApp.Run();
+        //        waitHandler.WaitOne();
+        //    }
 
-            if (SetRebootFlag.RebootPending)
-                SendRebootCommand();
-        }
-
-        private static void RemoveStoredWorkflowFile()
-        {
-            
-        }
-
-        private static void StoreWorkflowFile(FileInfo fileInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void StoreWorkflowFile()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static FileInfo GetStoredWorkflowFile()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void LoadStoredWorkflow()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static bool WorkflowIsStored()
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void LoadNewWorkflow(FileInfo fileInfo)
-        {
-            throw new NotImplementedException();
-        }
-
+        //    if (SetRebootFlag.RebootPending)
+        //        SendRebootCommand();
+        //}
+        
         private static void SendRebootCommand()
         {
             Process.Start("shutdown", "-r -f -t 10");
@@ -244,29 +210,6 @@ namespace iiBee.RunTime
         //    wfApp.Load(id);
         //    wfApp.Run();
         //    waitHandler.WaitOne();
-        //}
-
-        private static XmlWorkflowInstanceStore SetupXmlpersistenceStore(Guid workflowId)
-        {
-            XmlWorkflowInstanceStore instanceStore = new XmlWorkflowInstanceStore(workflowId);
-            InstanceHandle handle = instanceStore.CreateInstanceHandle();
-            InstanceView view = instanceStore.Execute(handle,
-                                                    new CreateWorkflowOwnerCommand(),
-                                                    TimeSpan.FromSeconds(5));
-            handle.Free();
-            instanceStore.DefaultInstanceOwner = view.InstanceOwner;
-            return instanceStore;
-        }
-
-        private static DynamicActivity LoadWorkflow(string workflow)
-        {
-            XamlXmlReaderSettings settings = new XamlXmlReaderSettings();
-            settings.LocalAssembly = Assembly.GetExecutingAssembly();
-
-            using (XamlXmlReader reader = new XamlXmlReader(workflow, settings))
-            {
-                return ActivityXamlServices.Load(reader) as DynamicActivity;
-            }
-        }
+        //}       
     }
 }
