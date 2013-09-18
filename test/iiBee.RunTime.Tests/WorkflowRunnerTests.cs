@@ -41,10 +41,17 @@ namespace iiBee.RunTime.Tests
         public void ExitWithLoadErrorTest()
         {
             WorkflowRunner wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"],
-                new FileInfo(@".\TestResources\LoadFailedWorkflow.xaml"), false);
-
+                new FileInfo(@".\TestResources\RebootWorkflow.xaml"), false);
             ExitReaction reaction = wfRunner.RunWorkflow();
-            Assert.Equal<ExitReaction>(ExitReaction.ErrorLoading, reaction);
+            Assert.Equal<ExitReaction>(ExitReaction.Reboot, reaction);
+
+            //Destroy Instance Store for Test
+            Directory.Delete(ConfigurationManager.AppSettings["WF4DataFolderDirectory"]);
+
+            wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"],
+                new FileInfo(@".\TestResources\RebootWorkflow.xaml"), true);
+            reaction = wfRunner.RunWorkflow();
+            Assert.Equal<ExitReaction>(ExitReaction.ErrorLoadingFromInstanceStore, reaction);
         }
     }
 }

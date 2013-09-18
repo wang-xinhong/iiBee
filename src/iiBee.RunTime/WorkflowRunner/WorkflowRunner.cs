@@ -20,11 +20,14 @@ namespace iiBee.RunTime
         private DirectoryInfo _WorkingDirectory = null;
         private Guid _WorkflowId = new Guid("50863C72-3ABA-4631-8995-0ACA0385B7A3");
         private WorkflowApplication _WorkflowApp = null;
+        private bool _IsResumedWorkflow = false;
 
-        public WorkflowRunner(string dataFolder, FileInfo workflow, bool resume)
+        public WorkflowRunner(string dataFolder, FileInfo workflow, bool resume = false)
         {
             _WorkingDirectory = new DirectoryInfo(
                 dataFolder + "WF4DataFolder");
+
+            _IsResumedWorkflow = resume;
 
             if (!resume && _WorkingDirectory.Exists)
                 _WorkingDirectory.Delete(true);
@@ -63,14 +66,11 @@ namespace iiBee.RunTime
                     return UnhandledExceptionAction.Abort;
                 };
 
-            //try
-            //{
-            //    _WorkflowApp.Load(_WorkflowId);
-            //}
-            //catch
-            //{
-            //    return ExitReaction.ErrorLoading;
-            //}
+            if (_IsResumedWorkflow)
+            {
+                try { _WorkflowApp.Load(_WorkflowId); }
+                catch { return ExitReaction.ErrorLoadingFromInstanceStore; }
+            }
             _WorkflowApp.Run();
             waitHandler.WaitOne();
 
