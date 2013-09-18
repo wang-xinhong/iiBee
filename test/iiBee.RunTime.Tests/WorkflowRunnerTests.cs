@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using Xunit;
 
@@ -9,8 +10,8 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void ExitWithFinishedTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(@".\Data\", 
-                new FileInfo(@".\TestResources\SimpleWorkflow.xaml"));
+            WorkflowRunner wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"], 
+                new FileInfo(@".\TestResources\SimpleWorkflow.xaml"), false);
 
             ExitReaction reaction = wfRunner.RunWorkflow();
             Assert.Equal<ExitReaction>(ExitReaction.Finished, reaction);
@@ -19,8 +20,8 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void ExitWithRebootTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(@".\Data\",
-                new FileInfo(@".\TestResources\RebootWorkflow.xaml"));
+            WorkflowRunner wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"],
+                new FileInfo(@".\TestResources\RebootWorkflow.xaml"), false);
 
             ExitReaction reaction = wfRunner.RunWorkflow();
             Assert.Equal<ExitReaction>(ExitReaction.Reboot, reaction);
@@ -29,8 +30,8 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void ExitWithUnhandeledExceptionTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(@".\Data\",
-                new FileInfo(@".\TestResources\ExceptionWorkflow.xaml"));
+            WorkflowRunner wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"],
+                new FileInfo(@".\TestResources\ExceptionWorkflow.xaml"), false);
 
             ExitReaction reaction = wfRunner.RunWorkflow();
             Assert.Equal<ExitReaction>(ExitReaction.ErrorExecuting, reaction);
@@ -39,8 +40,8 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void ExitWithLoadErrorTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(@".\Data\",
-                new FileInfo(@".\TestResources\LoadFailedWorkflow.xaml"));
+            WorkflowRunner wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"],
+                new FileInfo(@".\TestResources\LoadFailedWorkflow.xaml"), false);
 
             ExitReaction reaction = wfRunner.RunWorkflow();
             Assert.Equal<ExitReaction>(ExitReaction.ErrorLoading, reaction);

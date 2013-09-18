@@ -3,15 +3,13 @@ using System;
 using System.Activities;
 using System.Activities.DurableInstancing;
 using System.Activities.XamlIntegration;
-using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.DurableInstancing;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Xaml;
 using WF4Samples.WF4Persistence;
 
@@ -23,10 +21,15 @@ namespace iiBee.RunTime
         private Guid _WorkflowId = new Guid("50863C72-3ABA-4631-8995-0ACA0385B7A3");
         private WorkflowApplication _WorkflowApp = null;
 
-        public WorkflowRunner(string dataFolder, FileInfo workflow)
+        public WorkflowRunner(string dataFolder, FileInfo workflow, bool resume)
         {
             _WorkingDirectory = new DirectoryInfo(
                 dataFolder + "WF4DataFolder");
+
+            if (!resume && _WorkingDirectory.Exists)
+                _WorkingDirectory.Delete(true);
+
+            _WorkingDirectory.Create();
 
             DynamicActivity wf = LoadWorkflow(workflow.FullName);
             _WorkflowApp = new WorkflowApplication(wf);
@@ -60,14 +63,14 @@ namespace iiBee.RunTime
                     return UnhandledExceptionAction.Abort;
                 };
 
-            try
-            {
-                _WorkflowApp.Load(_WorkflowId);
-            }
-            catch
-            {
-                return ExitReaction.ErrorLoading;
-            }
+            //try
+            //{
+            //    _WorkflowApp.Load(_WorkflowId);
+            //}
+            //catch
+            //{
+            //    return ExitReaction.ErrorLoading;
+            //}
             _WorkflowApp.Run();
             waitHandler.WaitOne();
 
