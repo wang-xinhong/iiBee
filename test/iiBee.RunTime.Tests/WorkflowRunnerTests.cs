@@ -46,7 +46,7 @@ namespace iiBee.RunTime.Tests
             Assert.Equal<ExitReaction>(ExitReaction.Reboot, reaction);
 
             //Destroy Instance Store for Test
-            Directory.Delete(ConfigurationManager.AppSettings["WF4DataFolderDirectory"]);
+            Directory.Delete(ConfigurationManager.AppSettings["WF4DataFolderDirectory"], true);
 
             wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"],
                 new FileInfo(@".\TestResources\RebootWorkflow.xaml"), true);
