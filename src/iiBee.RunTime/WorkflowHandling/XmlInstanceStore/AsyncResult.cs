@@ -9,7 +9,8 @@ using System.Threading;
 
 namespace iiBee.RunTime.WorkflowHandling.XmlInstanceStore
 {
-    abstract class AsyncResult : IAsyncResult {
+    abstract class AsyncResult : IAsyncResult, IDisposable 
+    {
         static AsyncCallback asyncCompletionWrapperCallback;
         AsyncCallback callback;
         bool completedSynchronously;
@@ -208,5 +209,10 @@ namespace iiBee.RunTime.WorkflowHandling.XmlInstanceStore
         // and leveraging PrepareAsyncCompletion for conversion to an AsyncCallback.
         // NOTE: requires that "this" is passed in as the state object to the asynchronous sub-call being used with a completion routine.
         protected delegate bool AsyncCompletion(IAsyncResult result);
+
+        public void Dispose()
+        {
+            manualResetEvent.Dispose();
+        }
     }
 }
