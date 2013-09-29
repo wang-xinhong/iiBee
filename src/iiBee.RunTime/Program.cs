@@ -51,9 +51,41 @@ namespace iiBee.RunTime
             }
         }
         
+        /// <summary>
+        /// Execute reboot execution and system preparation.
+        /// </summary>
         private static void SendRebootCommand()
         {
-            Process.Start("shutdown", "-r -f -t 10");
+            if (InGuestMode())
+            {
+                // Don't do anything, wBee is only a guest.
+                log.Info("I'm a guest, no reboots are done by me.");
+                return;
+            }
+
+            //TODO: Add logic for #6 here
+
+            string rebootArgs = "-r -f -t 10";
+            log.Debug("Starting reboot with args[" + rebootArgs + "]");
+            Process.Start("shutdown", rebootArgs);
+        }
+
+        /// <summary>
+        /// In Guest Mode no reboots are executed, also no registry changes are done.
+        /// Application only return exit codes, the Program that starts wBee musst handle the reboots according to it's exit codes.
+        /// </summary>
+        /// <returns>Returns true if Guest Mode is active.</returns>
+        private static bool InGuestMode()
+        {
+            try
+            {
+                return (ConfigurationManager.AppSettings["Guest"] == "true") ? true : false;
+            }
+            catch
+            {
+                // If Parameter can't be found set it to default.
+                return false;
+            }
         }
     }
 }
