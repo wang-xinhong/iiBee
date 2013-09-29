@@ -7,10 +7,12 @@ namespace iiBee.RunTime.Tests
 {
     public class WorkflowRunnerTests
     {
+        public string WorkingDir = ConfigurationManager.AppSettings["WorkingDirectory"];
+
         [Fact]
         public void ExitWithFinishedTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"], 
+            WorkflowRunner wfRunner = new WorkflowRunner(WorkingDir, 
                 new FileInfo(@".\TestResources\SimpleWorkflow.xaml"), false);
 
             ExitReaction reaction = wfRunner.RunWorkflow();
@@ -20,7 +22,7 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void ExitWithRebootTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"],
+            WorkflowRunner wfRunner = new WorkflowRunner(WorkingDir,
                 new FileInfo(@".\TestResources\RebootWorkflow.xaml"), false);
 
             ExitReaction reaction = wfRunner.RunWorkflow();
@@ -30,7 +32,7 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void ExitWithUnhandeledExceptionTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"],
+            WorkflowRunner wfRunner = new WorkflowRunner(WorkingDir,
                 new FileInfo(@".\TestResources\ExceptionWorkflow.xaml"), false);
 
             ExitReaction reaction = wfRunner.RunWorkflow();
@@ -40,18 +42,32 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void ExitWithLoadErrorTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"],
+            WorkflowRunner wfRunner = new WorkflowRunner(WorkingDir,
                 new FileInfo(@".\TestResources\RebootWorkflow.xaml"), false);
             ExitReaction reaction = wfRunner.RunWorkflow();
             Assert.Equal<ExitReaction>(ExitReaction.Reboot, reaction);
 
             //Destroy Instance Store for Test
-            Directory.Delete(ConfigurationManager.AppSettings["WF4DataFolderDirectory"], true);
+            Directory.Delete(WorkingDir, true);
 
-            wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WF4DataFolderDirectory"],
+            wfRunner = new WorkflowRunner(WorkingDir,
                 new FileInfo(@".\TestResources\RebootWorkflow.xaml"), true);
             reaction = wfRunner.RunWorkflow();
             Assert.Equal<ExitReaction>(ExitReaction.ErrorLoadingFromInstanceStore, reaction);
+        }
+
+        [Fact]
+        public void FinishRebootWorkflowTest()
+        {
+            WorkflowRunner wfRunner = new WorkflowRunner(WorkingDir,
+                new FileInfo(@".\TestResources\RebootWorkflow.xaml"), false);
+            ExitReaction reaction = wfRunner.RunWorkflow();
+            Assert.Equal<ExitReaction>(ExitReaction.Reboot, reaction);
+
+            wfRunner = new WorkflowRunner(WorkingDir,
+                new FileInfo(@".\TestResources\RebootWorkflow.xaml"), true);
+            reaction = wfRunner.RunWorkflow();
+            Assert.Equal<ExitReaction>(ExitReaction.Finished, reaction);
         }
     }
 }
