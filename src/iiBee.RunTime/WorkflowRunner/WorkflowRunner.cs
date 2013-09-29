@@ -1,17 +1,16 @@
 ﻿using iiBee.RunTime.Library.Activities;
+using NLog;
 using System;
 using System.Activities;
 using System.Activities.DurableInstancing;
 using System.Activities.XamlIntegration;
-using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.DurableInstancing;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Xaml;
 using WF4Samples.WF4Persistence;
 
@@ -19,17 +18,36 @@ namespace iiBee.RunTime
 {
     public class WorkflowRunner
     {
-        private DirectoryInfo _WorkingDirectory = null;
-        private Guid _WorkflowId = new Guid("50863C72-3ABA-4631-8995-0ACA0385B7A3");
-        private WorkflowApplication _WorkflowApp = null;
+        static Logger log = LogManager.GetCurrentClassLogger();
 
-        public WorkflowRunner(string dataFolder, FileInfo workflow)
+        private DirectoryInfo _WorkingDirectory = null;
+        private Guid _WorkflowId = Guid.Empty;
+        private WorkflowApplication _WorkflowApp = null;
+        private bool _IsResumedWorkflow = false;
+
+        public WorkflowRunner(string dataFolder, FileInfo workflow, bool resume = false)
         {
             _WorkingDirectory = new DirectoryInfo(
                 dataFolder + "WF4DataFolder");
+            
+            _IsResumedWorkflow = resume;
+
+            if (!resume && _WorkingDirectory.Exists)
+                _WorkingDirectory.Delete(true);
+            else if(resume && _WorkingDirectory.Exists)
+            {
+                _WorkflowId = Guid.Parse(
+                    Path.GetFileNameWithoutExtension(
+                    _WorkingDirectory.GetFiles().First().Name));
+            }
+
+            if (!_WorkingDirectory.Exists)
+                _WorkingDirectory.Create();
 
             DynamicActivity wf = LoadWorkflow(workflow.FullName);
             _WorkflowApp = new WorkflowApplication(wf);
+            if(_WorkflowId == Guid.Empty)
+                _WorkflowId = _WorkflowApp.Id;
             _WorkflowApp.InstanceStore = SetupXmlpersistenceStore(_WorkflowId);
         }
 
@@ -40,6 +58,7 @@ namespace iiBee.RunTime
                 {
                     if (SetRebootFlag.RebootPending)
                     {
+                        SetRebootFlag.RebootPending = false;
                         ret = ExitReaction.Reboot;
                         return PersistableIdleAction.Unload;
                     }
@@ -60,13 +79,14 @@ namespace iiBee.RunTime
                     return UnhandledExceptionAction.Abort;
                 };
 
-            try
+            if (_IsResumedWorkflow)
             {
-                _WorkflowApp.Load(_WorkflowId);
-            }
-            catch
-            {
-                return ExitReaction.ErrorLoading;
+                try { _WorkflowApp.Load(_WorkflowId); }
+                catch (Exception ex)
+                {
+                    log.Error("An error occured while loading the last Workflow from instance store: " + ex.Message);
+                    return ExitReaction.ErrorLoadingFromInstanceStore; 
+                }
             }
             _WorkflowApp.Run();
             waitHandler.WaitOne();

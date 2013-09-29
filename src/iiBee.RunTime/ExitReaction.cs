@@ -9,7 +9,7 @@ namespace iiBee.RunTime
     {
         Reboot,
         Finished,
-        ErrorLoading,
+        ErrorLoadingFromInstanceStore,
         ErrorExecuting
     }
 }

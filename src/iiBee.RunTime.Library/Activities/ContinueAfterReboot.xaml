@@ -19,18 +19,25 @@
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
     <sco:Collection x:TypeArguments="AssemblyReference">
-      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
       <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>System.Core</AssemblyReference>
       <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
       <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>iiBee.RunTime.Library</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence DisplayName="Continue After Reboot" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <local:SetRebootFlag sap2010:Annotation.AnnotationText="Set a Flag to tell the RunTime this Persist is a Reboot" sap2010:WorkflowViewState.IdRef="SetRebootFlag_1" />
-    <Persist sap2010:Annotation.AnnotationText="This Persist saves the current state of the workflow and return to the RunTime" sap2010:WorkflowViewState.IdRef="Persist_1" />
-    <sads:DebugSymbol.Symbol>d15EOlxWaXN1YWwgU3R1ZGlvIDIwMTJcUHJvamVjdHNcaWlCZWVcaWlCZWUuUnVuVGltZS5MaWJyYXJ5XEFjdGl2aXRpZXNcQ29udGludWVBZnRlclJlYm9vdC54YW1sAx4DIg4CAQEfBR+6AQIBAyAFIK8BAgEC</sads:DebugSymbol.Symbol>
+    <Delay Duration="00:00:01" sap2010:WorkflowViewState.IdRef="Delay_1" />
+    <sads:DebugSymbol.Symbol>d2ZDOlxVc2Vyc1xrb2dsZXJhclxEb2N1bWVudHNcR2l0SHViXGlpQmVlXHNyY1xpaUJlZS5SdW5UaW1lLkxpYnJhcnlcQWN0aXZpdGllc1xDb250aW51ZUFmdGVyUmVib290LnhhbWwEJQMpDgIBASYFJqoBAgEEJwUnTAIBAicVJx8CAQM=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -41,13 +48,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Persist_1" sap:VirtualizedContainerService.HintSize="200,22">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsAnnotationDocked">False</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Delay_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="222,208">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">

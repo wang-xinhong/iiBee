@@ -11,7 +11,7 @@ namespace Common {
     public static class IOHelper {
         public static readonly string InstanceFormatString = "{0}.xml";
         public static readonly string TempDirectory =
-            Path.Combine(ConfigurationManager.AppSettings["WF4DataFolderDirectory"].ToString(), "WF4DataFolder");
+            Path.Combine(ConfigurationManager.AppSettings["WorkingDirectory"].ToString(), "WF4DataFolder");
 
         public static string GetFileName(Guid id) {
             EnsurePersistenceFolderExists();
