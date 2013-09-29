@@ -1,4 +1,4 @@
-﻿using System;
+﻿using iiBee.RunTime.WorkflowHandling;
 using System.Configuration;
 using System.IO;
 using Xunit;
@@ -12,7 +12,7 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void ExitWithFinishedTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(WorkingDir, 
+            WorkflowRunner wfRunner = new WorkflowRunner( 
                 new FileInfo(@".\TestResources\SimpleWorkflow.xaml"), false);
 
             ExitReaction reaction = wfRunner.RunWorkflow();
@@ -22,7 +22,7 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void ExitWithRebootTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(WorkingDir,
+            WorkflowRunner wfRunner = new WorkflowRunner(
                 new FileInfo(@".\TestResources\RebootWorkflow.xaml"), false);
 
             ExitReaction reaction = wfRunner.RunWorkflow();
@@ -32,7 +32,7 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void ExitWithUnhandeledExceptionTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(WorkingDir,
+            WorkflowRunner wfRunner = new WorkflowRunner(
                 new FileInfo(@".\TestResources\ExceptionWorkflow.xaml"), false);
 
             ExitReaction reaction = wfRunner.RunWorkflow();
@@ -42,7 +42,7 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void ExitWithLoadErrorTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(WorkingDir,
+            WorkflowRunner wfRunner = new WorkflowRunner(
                 new FileInfo(@".\TestResources\RebootWorkflow.xaml"), false);
             ExitReaction reaction = wfRunner.RunWorkflow();
             Assert.Equal<ExitReaction>(ExitReaction.Reboot, reaction);
@@ -50,7 +50,7 @@ namespace iiBee.RunTime.Tests
             //Destroy Instance Store for Test
             Directory.Delete(WorkingDir, true);
 
-            wfRunner = new WorkflowRunner(WorkingDir,
+            wfRunner = new WorkflowRunner(
                 new FileInfo(@".\TestResources\RebootWorkflow.xaml"), true);
             reaction = wfRunner.RunWorkflow();
             Assert.Equal<ExitReaction>(ExitReaction.ErrorLoadingFromInstanceStore, reaction);
@@ -59,12 +59,12 @@ namespace iiBee.RunTime.Tests
         [Fact]
         public void FinishRebootWorkflowTest()
         {
-            WorkflowRunner wfRunner = new WorkflowRunner(WorkingDir,
+            WorkflowRunner wfRunner = new WorkflowRunner(
                 new FileInfo(@".\TestResources\RebootWorkflow.xaml"), false);
             ExitReaction reaction = wfRunner.RunWorkflow();
             Assert.Equal<ExitReaction>(ExitReaction.Reboot, reaction);
 
-            wfRunner = new WorkflowRunner(WorkingDir,
+            wfRunner = new WorkflowRunner(
                 new FileInfo(@".\TestResources\RebootWorkflow.xaml"), true);
             reaction = wfRunner.RunWorkflow();
             Assert.Equal<ExitReaction>(ExitReaction.Finished, reaction);

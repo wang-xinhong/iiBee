@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using iiBee.RunTime.WorkflowHandling;
+using NLog;
 using System;
 using System.Configuration;
 using System.Diagnostics;
@@ -20,11 +21,11 @@ namespace iiBee.RunTime
             if (storage.WorkflowIsStored())
             {
                 FileInfo wfFile = storage.StoredWorkflowFile;
-                wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WorkingDirectory"], wfFile, true);
+                wfRunner = new WorkflowRunner(wfFile, true);
             }
             else if (startParams.HasParameters)
             {
-                wfRunner = new WorkflowRunner(ConfigurationManager.AppSettings["WorkingDirectory"], startParams.WorkflowFile, false);
+                wfRunner = new WorkflowRunner(startParams.WorkflowFile, false);
             }
             else
             {
