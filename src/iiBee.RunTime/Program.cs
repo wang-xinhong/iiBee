@@ -87,7 +87,7 @@ namespace iiBee.RunTime
         /// </summary>
         private static void EnableAutoLogon()
         {
-            RegistryKey myKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\winlogon");
+            RegistryKey myKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\winlogon", true);
             myKey.SetValue("AutoAdminLogon", 1, RegistryValueKind.String);
             myKey.SetValue("DefaultUserName", ConfigurationManager.AppSettings["DefaultUserName"], RegistryValueKind.String);
             myKey.SetValue("DefaultPassword", ConfigurationManager.AppSettings["DefaultPassword"], RegistryValueKind.String);
@@ -100,11 +100,11 @@ namespace iiBee.RunTime
         /// </summary>
         private static void DisableAutoLogon()
         {
-            RegistryKey myKey = Registry.LocalMachine.CreateSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\winlogon");
+            RegistryKey myKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\winlogon", true);
             myKey.SetValue("AutoAdminLogon", 0, RegistryValueKind.String);
-            myKey.DeleteValue("DefaultUserName");
-            myKey.DeleteValue("DefaultPassword");
-            myKey.DeleteValue("DefaultDomainName");
+            myKey.DeleteValue("DefaultUserName", false);
+            myKey.DeleteValue("DefaultPassword", false);
+            myKey.DeleteValue("DefaultDomainName", false);
             myKey.Close();
         }
 
@@ -123,7 +123,7 @@ namespace iiBee.RunTime
         /// </summary>
         private static void DisableAutoStart()
         {
-            Registry.CurrentUser.DeleteSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\wBee");
+            Registry.CurrentUser.DeleteSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\wBee", false);
         }
 
         /// <summary>
