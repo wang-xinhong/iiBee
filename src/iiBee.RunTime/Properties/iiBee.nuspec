@@ -19,8 +19,8 @@
   <files>
     <file src="Properties\chocolateyInstall.ps1" target="tools" />
     <file src="Properties\chocolateyUninstall.ps1" target="tools" />
-    <file src="bin\$configuration$\iiBee.RunTime.exe" target="tools/iiBee" />
-    <file src="bin\$configuration$\iiBee.RunTime.exe.config" target="tools/iiBee" />
+    <file src="bin\$configuration$\wBee.exe" target="tools/iiBee" />
+    <file src="bin\$configuration$\wBee.exe.config" target="tools/iiBee" />
     <file src="bin\$configuration$\*.dll" target="tools/iiBee" />
     <file src="bin\$configuration$\*.pdb" target="tools/iiBee" />
   </files>
