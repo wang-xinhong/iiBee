@@ -4,7 +4,8 @@
 
 using System;
 
-namespace WF4Samples.WF4Persistence {
+namespace iiBee.RunTime.WorkflowHandling.XmlInstanceStore
+{
 
     //An AsyncResult that completes as soon as it is instantiated.
     class CompletedAsyncResult : AsyncResult {

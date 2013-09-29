@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Configuration;
+using System.IO;
 using System.Linq;
 
 namespace iiBee.RunTime
@@ -16,9 +17,12 @@ namespace iiBee.RunTime
                 HasParameters = true;
                 WorkflowFile = new FileInfo(args[0]);
             }
+
+            this.GuestMode = (ConfigurationManager.AppSettings["Guest"] == "true") ? true : false;
         }
 
         public bool HasParameters { private set; get; }
         public FileInfo WorkflowFile { private set; get; }
+        public bool GuestMode { private set; get; }
     }
 }

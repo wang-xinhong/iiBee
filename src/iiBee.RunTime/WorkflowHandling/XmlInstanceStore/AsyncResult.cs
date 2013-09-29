@@ -7,7 +7,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace WF4Samples.WF4Persistence {
+namespace iiBee.RunTime.WorkflowHandling.XmlInstanceStore
+{
     abstract class AsyncResult : IAsyncResult {
         static AsyncCallback asyncCompletionWrapperCallback;
         AsyncCallback callback;

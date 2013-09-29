@@ -1,18 +1,19 @@
 ﻿using iiBee.RunTime.Library.Activities;
+using iiBee.RunTime.WorkflowHandling.XmlInstanceStore;
 using NLog;
 using System;
 using System.Activities;
 using System.Activities.DurableInstancing;
 using System.Activities.XamlIntegration;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.DurableInstancing;
 using System.Threading;
 using System.Xaml;
-using WF4Samples.WF4Persistence;
 
-namespace iiBee.RunTime
+namespace iiBee.RunTime.WorkflowHandling
 {
     public class WorkflowRunner
     {
@@ -23,11 +24,12 @@ namespace iiBee.RunTime
         private WorkflowApplication _WorkflowApp = null;
         private bool _IsResumedWorkflow = false;
 
-        public WorkflowRunner(string dataFolder, FileInfo workflow, bool resume = false)
+        public WorkflowRunner(FileInfo workflow, bool resume = false)
         {
             _WorkingDirectory = new DirectoryInfo(
-                dataFolder + "WF4DataFolder");
-            
+                ConfigurationManager.AppSettings["WorkingDirectory"] + "WF4DataFolder");
+            IOHelper.CreateInstance(_WorkingDirectory.FullName);
+
             _IsResumedWorkflow = resume;
 
             if (!resume && _WorkingDirectory.Exists)

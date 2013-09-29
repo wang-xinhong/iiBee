@@ -2,7 +2,6 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //-----------------------------------------------------------------------------
 
-using Common;
 using System;
 using System.Activities.DurableInstancing;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace WF4Samples.WF4Persistence {
+namespace iiBee.RunTime.WorkflowHandling.XmlInstanceStore {
     public class XmlWorkflowInstanceStore : InstanceStore {
         Guid ownerInstanceID;
         public XmlWorkflowInstanceStore() : this(Guid.NewGuid()) {
@@ -46,7 +45,7 @@ namespace WF4Samples.WF4Persistence {
             }
                 //The LoadWorkflow command instructs the instance store to lock and load the instance bound to the identifier in the instance handle
             else if (command is LoadWorkflowCommand) {
-                string fileName = IOHelper.GetFileName(this.ownerInstanceID);
+                string fileName = IOHelper.Instance.GetFileName(this.ownerInstanceID);
 
                 try {
                     using (FileStream inputStream = new FileStream(fileName, FileMode.Open)) {
@@ -107,7 +106,7 @@ namespace WF4Samples.WF4Persistence {
 
         //Saves the persistance data to an xml file.
         void Save(IDictionary<XName, InstanceValue> instanceData) {
-            string fileName = IOHelper.GetFileName(this.ownerInstanceID);
+            string fileName = IOHelper.Instance.GetFileName(this.ownerInstanceID);
             XmlDocument doc = new XmlDocument();
             doc.LoadXml("<InstanceValues/>");
 
