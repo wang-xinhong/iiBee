@@ -4,8 +4,6 @@ using System;
 using System.Activities;
 using System.Activities.DurableInstancing;
 using System.Activities.XamlIntegration;
-using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;

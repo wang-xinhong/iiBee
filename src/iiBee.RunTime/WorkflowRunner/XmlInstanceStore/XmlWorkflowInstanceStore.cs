@@ -2,17 +2,15 @@
 // Copyright (c) Microsoft Corporation.  All rights reserved.
 //-----------------------------------------------------------------------------
 
+using Common;
 using System;
 using System.Activities.DurableInstancing;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.DurableInstancing;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Linq;
-using Common;
-using System.Activities;
-using System.Runtime.DurableInstancing;
-using System.ServiceModel.Persistence;
 
 namespace WF4Samples.WF4Persistence {
     public class XmlWorkflowInstanceStore : InstanceStore {

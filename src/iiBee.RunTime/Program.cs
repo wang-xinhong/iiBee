@@ -1,18 +1,8 @@
-﻿using iiBee.RunTime.Library.Activities;
-using NLog;
+﻿using NLog;
 using System;
-using System.Activities;
-using System.Activities.DurableInstancing;
-using System.Activities.XamlIntegration;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.DurableInstancing;
-using System.Threading;
-using System.Xaml;
-using WF4Samples.WF4Persistence;
 
 namespace iiBee.RunTime
 {
