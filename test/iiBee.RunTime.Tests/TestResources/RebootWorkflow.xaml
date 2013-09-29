@@ -1,6 +1,6 @@
 ﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="iiBee.RunTime.Tests.TestResources.RebootWorkflow" sap2010:ExpressionActivityEditor.ExpressionActivityEditor="C#" sap2010:WorkflowViewState.IdRef="iiBee.RunTime.Tests.TestResources.RebootWorkflow_1"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
- xmlns:irla="clr-namespace:iiBee.RunTime.Library.Activities;assembly=iiBee.RunTime.Library"
+ xmlns:irla="clr-namespace:iiBee.RunTime.Library.Activities;assembly=wBee.Library"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
  xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
