@@ -19,18 +19,25 @@ namespace iiBee.RunTime
         {
             StartParameters startParams = new StartParameters(args);
 
-            if (!InGuestMode())
-            {
-                //Remove AutoLogon after Start, if it exists
-                DisableAutoLogon();
-                //Remove AutoStart entry after Start, if it exists
-                DisableAutoStart();
-            }
-
             WorkflowRunner wfRunner = null;
             if (storage.WorkflowIsStored())
             {
+                // WBee returns from an reboot/restart
+                if (!InGuestMode())
+                {
+                    //Remove AutoLogon after Start, if it exists
+                    DisableAutoLogon();
+                    //Remove AutoStart entry after Start, if it exists
+                    DisableAutoStart();
+                }
+                else
+                {
+                    log.Info("Guest Mode active: WBee will not change registry or start reboots.");
+                }
+
                 FileInfo wfFile = storage.StoredWorkflowFile;
+                log.Info("Found persisted workflow file[" + wfFile.FullName + "]");
+
                 wfRunner = new WorkflowRunner(wfFile, true);
             }
             else if (startParams.HasParameters)
@@ -87,12 +94,14 @@ namespace iiBee.RunTime
         /// </summary>
         private static void EnableAutoLogon()
         {
+            log.Debug("Add autologon to registry ...");
             RegistryKey myKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\winlogon", true);
             myKey.SetValue("AutoAdminLogon", 1, RegistryValueKind.String);
             myKey.SetValue("DefaultUserName", ConfigurationManager.AppSettings["DefaultUserName"], RegistryValueKind.String);
             myKey.SetValue("DefaultPassword", ConfigurationManager.AppSettings["DefaultPassword"], RegistryValueKind.String);
             myKey.SetValue("DefaultDomainName", ConfigurationManager.AppSettings["DefaultDomainName"], RegistryValueKind.String);
             myKey.Close();
+            log.Debug("Add autologon to registry ... done");
         }
 
         /// <summary>
@@ -100,12 +109,14 @@ namespace iiBee.RunTime
         /// </summary>
         private static void DisableAutoLogon()
         {
+            log.Debug("Remove autologon from registry ...");
             RegistryKey myKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\winlogon", true);
             myKey.SetValue("AutoAdminLogon", 0, RegistryValueKind.String);
             myKey.DeleteValue("DefaultUserName", false);
             myKey.DeleteValue("DefaultPassword", false);
             myKey.DeleteValue("DefaultDomainName", false);
             myKey.Close();
+            log.Debug("Remove autologon from registry ... done");
         }
 
         /// <summary>
@@ -113,9 +124,11 @@ namespace iiBee.RunTime
         /// </summary>
         private static void EnableAutoStart()
         {
+            log.Debug("Add wbee autostart entry in registry ...");
             RegistryKey myKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\wBee");
             myKey.SetValue("wBee", Assembly.GetExecutingAssembly().GetName().CodeBase, RegistryValueKind.String);
             myKey.Close();
+            log.Debug("Add wbee autostart entry in registry ... done");
         }
 
         /// <summary>
@@ -123,7 +136,9 @@ namespace iiBee.RunTime
         /// </summary>
         private static void DisableAutoStart()
         {
+            log.Debug("Remove wbee autostart entry from registry ...");
             Registry.CurrentUser.DeleteSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\wBee", false);
+            log.Debug("Remove wbee autostart entry from registry ... done");
         }
 
         /// <summary>

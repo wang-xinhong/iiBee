@@ -35,6 +35,9 @@ namespace iiBee.RunTime.WorkflowHandling
 
         public WorkflowRunner(FileInfo workflow, bool resume = false)
         {
+            log.Trace("Constructor WorkflowRunner ...");
+            log.Trace("Parameters: workflow[" + workflow.FullName + "], resume[" + resume.ToString() + "]");
+
             _WorkingDirectory = new DirectoryInfo(
                 ConfigurationManager.AppSettings["WorkingDirectory"] + "WF4DataFolder");
             IOHelper.CreateInstance(_WorkingDirectory.FullName);
@@ -42,8 +45,11 @@ namespace iiBee.RunTime.WorkflowHandling
             _IsResumedWorkflow = resume;
 
             if (!resume && _WorkingDirectory.Exists)
+            {
+                log.Debug("Deleting WorkingDirectory[" + _WorkingDirectory.FullName + "]");
                 _WorkingDirectory.Delete(true);
-            else if(resume && _WorkingDirectory.Exists)
+            }
+            else if (resume && _WorkingDirectory.Exists)
             {
                 _WorkflowId = Guid.Parse(
                     Path.GetFileNameWithoutExtension(
@@ -51,17 +57,26 @@ namespace iiBee.RunTime.WorkflowHandling
             }
 
             if (!_WorkingDirectory.Exists)
+            {
+                log.Debug("Creating WorkingDirectory[" + _WorkingDirectory.FullName + "]");
                 _WorkingDirectory.Create();
+            }
 
+            
             DynamicActivity wf = LoadWorkflow(workflow.FullName);
             _WorkflowApp = new WorkflowApplication(wf);
+            log.Debug("Workflow App created");
 
             // Add Extension to make activity WriteLine write to log file and console.
             _WorkflowApp.Extensions.Add(new LogWriter());
+            log.Debug("Added Extensions");
             
             if(_WorkflowId == Guid.Empty)
                 _WorkflowId = _WorkflowApp.Id;
             _WorkflowApp.InstanceStore = SetupXmlpersistenceStore(_WorkflowId);
+            log.Debug("Added Persistence Store");
+
+            log.Trace("Constructor WorkflowRunner ... done");
         }
 
         public ExitReaction RunWorkflow()
@@ -121,13 +136,18 @@ namespace iiBee.RunTime.WorkflowHandling
 
         private static DynamicActivity LoadWorkflow(string workflow)
         {
+            log.Debug("Loading Workflow ...");
             XamlXmlReaderSettings settings = new XamlXmlReaderSettings();
             settings.LocalAssembly = Assembly.GetExecutingAssembly();
 
             using (XamlXmlReader reader = new XamlXmlReader(workflow, settings))
             {
-                return ActivityXamlServices.Load(reader) as DynamicActivity;
+                DynamicActivity activity = ActivityXamlServices.Load(reader) as DynamicActivity;
+                log.Debug("Loading Workflow ... done");
+
+                return activity;
             }
+            
         }
     }
 }
