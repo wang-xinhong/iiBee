@@ -5,6 +5,7 @@ using NLog;
 using System;
 using System.Activities;
 using System.Activities.DurableInstancing;
+using System.Activities.Tracking;
 using System.Activities.XamlIntegration;
 using System.Configuration;
 using System.IO;
@@ -69,6 +70,7 @@ namespace iiBee.RunTime.WorkflowHandling
 
             // Add Extension to make activity WriteLine write to log file and console.
             _WorkflowApp.Extensions.Add(new LogWriter());
+            _WorkflowApp.Extensions.Add(CreateLogParticipant());
             log.Debug("Added Extensions");
             
             if(_WorkflowId == Guid.Empty)
@@ -148,6 +150,52 @@ namespace iiBee.RunTime.WorkflowHandling
                 return activity;
             }
             
+        }
+
+        private static LogParticipant CreateLogParticipant()
+        {
+            LogParticipant tracking = new LogParticipant()
+            {
+                TrackingProfile = new TrackingProfile()
+                {
+                    Name = "LogTrackingProfile",
+                    Queries =
+                    {
+                        // For instance data, only track the started and completed events
+                        new WorkflowInstanceQuery()
+                        {
+                            States =
+                            {
+                                WorkflowInstanceStates.Started,
+                                WorkflowInstanceStates.Resumed,
+                                WorkflowInstanceStates.Unloaded,
+                                WorkflowInstanceStates.Completed
+                            }
+                        },
+
+                        // Log all bookmarks
+                        new BookmarkResumptionQuery()
+                        {
+                            Name = "*"
+                        },
+
+                        //Log all Activities
+                        new ActivityStateQuery()
+                        {
+                            ActivityName = "*",
+                            States = { "*" }
+                        },
+
+                        new CustomTrackingQuery()
+                        {
+                            Name= "*",
+                            ActivityName = "*"
+                        }
+                    }
+                }
+            };
+
+            return tracking;
         }
     }
 }
