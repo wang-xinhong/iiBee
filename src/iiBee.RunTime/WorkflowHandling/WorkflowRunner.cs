@@ -1,4 +1,5 @@
 ﻿using iiBee.RunTime.Library.Activities;
+using iiBee.RunTime.WorkflowHandling.Extensions;
 using iiBee.RunTime.WorkflowHandling.XmlInstanceStore;
 using NLog;
 using System;
@@ -24,6 +25,14 @@ namespace iiBee.RunTime.WorkflowHandling
         private WorkflowApplication _WorkflowApp = null;
         private bool _IsResumedWorkflow = false;
 
+        public WorkflowApplication WorkflowApp
+        {
+            get
+            {
+                return _WorkflowApp;
+            }
+        }
+
         public WorkflowRunner(FileInfo workflow, bool resume = false)
         {
             _WorkingDirectory = new DirectoryInfo(
@@ -46,6 +55,10 @@ namespace iiBee.RunTime.WorkflowHandling
 
             DynamicActivity wf = LoadWorkflow(workflow.FullName);
             _WorkflowApp = new WorkflowApplication(wf);
+
+            // Add Extension to make activity WriteLine write to log file and console.
+            _WorkflowApp.Extensions.Add(new LogWriter());
+            
             if(_WorkflowId == Guid.Empty)
                 _WorkflowId = _WorkflowApp.Id;
             _WorkflowApp.InstanceStore = SetupXmlpersistenceStore(_WorkflowId);

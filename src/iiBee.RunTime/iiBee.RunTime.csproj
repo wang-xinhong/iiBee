@@ -106,6 +106,7 @@
     </Compile>
     <Compile Include="StartParameters.cs" />
     <Compile Include="TemporaryStorage.cs" />
+    <Compile Include="WorkflowHandling\Extensions\LogWriter.cs" />
     <Compile Include="WorkflowHandling\WorkflowRunner.cs" />
     <Compile Include="WorkflowHandling\XmlInstanceStore\AsyncResult.cs" />
     <Compile Include="WorkflowHandling\XmlInstanceStore\CompletedAsyncResult.cs" />
