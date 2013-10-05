@@ -7,6 +7,7 @@ using System.Activities;
 using System.Activities.DurableInstancing;
 using System.Activities.Tracking;
 using System.Activities.XamlIntegration;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace iiBee.RunTime.WorkflowHandling
             }
         }
 
-        public WorkflowRunner(FileInfo workflow, bool resume = false)
+        public WorkflowRunner(FileInfo workflow, bool resume = false, IDictionary<string, object> input = null)
         {
             log.Trace("Constructor WorkflowRunner ...");
             log.Trace("Parameters: workflow[" + workflow.FullName + "], resume[" + resume.ToString() + "]");
@@ -62,10 +63,12 @@ namespace iiBee.RunTime.WorkflowHandling
                 log.Debug("Creating WorkingDirectory[" + _WorkingDirectory.FullName + "]");
                 _WorkingDirectory.Create();
             }
-
             
             DynamicActivity wf = LoadWorkflow(workflow.FullName);
-            _WorkflowApp = new WorkflowApplication(wf);
+            if (input != null)
+                _WorkflowApp = new WorkflowApplication(wf, input);
+            else
+                _WorkflowApp = new WorkflowApplication(wf);
             log.Debug("Workflow App created");
 
             // Add Extension to make activity WriteLine write to log file and console.
@@ -105,6 +108,7 @@ namespace iiBee.RunTime.WorkflowHandling
             _WorkflowApp.OnUnhandledException = (e) =>
                 {
                     ret = ExitReaction.ErrorExecuting;
+                    log.Error(e.UnhandledException.Message);
                     waitHandler.Set();
                     return UnhandledExceptionAction.Abort;
                 };
@@ -142,9 +146,14 @@ namespace iiBee.RunTime.WorkflowHandling
             XamlXmlReaderSettings settings = new XamlXmlReaderSettings();
             settings.LocalAssembly = Assembly.GetExecutingAssembly();
 
+            ActivityXamlServicesSettings activitySettings = new ActivityXamlServicesSettings
+            {
+                CompileExpressions = true
+            };
+
             using (XamlXmlReader reader = new XamlXmlReader(workflow, settings))
             {
-                DynamicActivity activity = ActivityXamlServices.Load(reader) as DynamicActivity;
+                DynamicActivity activity = ActivityXamlServices.Load(reader, activitySettings) as DynamicActivity;
                 log.Debug("Loading Workflow ... done");
 
                 return activity;

@@ -1,7 +1,9 @@
-﻿using iiBee.RunTime.WorkflowHandling;
+﻿using iiBee.RunTime.Helper;
+using iiBee.RunTime.WorkflowHandling;
 using Microsoft.Win32;
 using NLog;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
@@ -12,15 +14,27 @@ namespace iiBee.RunTime
     class Program
     {
         static Logger log = LogManager.GetCurrentClassLogger();
-        static TemporaryStorage storage = new TemporaryStorage(new FileInfo(
+        static TemporaryStorage storage = new TemporaryStorage(new DirectoryInfo(
             ConfigurationManager.AppSettings["TemporaryStorage"]));
 
         static void Main(string[] args)
         {
+            try
+            {
+                StartExecution(args);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message);
+            }
+        }
+
+        private static void StartExecution(string[] args)
+        {
             StartParameters startParams = new StartParameters(args);
 
             WorkflowRunner wfRunner = null;
-            if (storage.WorkflowIsStored())
+            if (!startParams.HasParameters && storage.WorkflowIsStored())
             {
                 // WBee returns from an reboot/restart
                 if (!InGuestMode())
@@ -42,7 +56,9 @@ namespace iiBee.RunTime
             }
             else if (startParams.HasParameters)
             {
-                wfRunner = new WorkflowRunner(startParams.WorkflowFile, false);
+                storage.StoreWorkflow(startParams.WorkflowFile);
+                Dictionary<string, object> input = GetInputArguments(storage.StoredWorkflowFile, startParams.InputArguments);
+                wfRunner = new WorkflowRunner(storage.StoredWorkflowFile, false, input);
             }
             else
             {
@@ -53,9 +69,6 @@ namespace iiBee.RunTime
             ExitReaction reaction = wfRunner.RunWorkflow();
             if (reaction == ExitReaction.Reboot)
             {
-                if (startParams.HasParameters) //otherwise it is already stored
-                    storage.StoreWorkflow(startParams.WorkflowFile);
-
                 log.Info("Preparing for system reboot");
                 SendRebootCommand();
                 Environment.Exit(ExitCodes.ClosedForReboot);
@@ -67,6 +80,18 @@ namespace iiBee.RunTime
                 log.Info("Finished workflow, application is stopping");
                 Environment.Exit(ExitCodes.FinishedSuccessfully);
             }
+        }
+
+
+        private static Dictionary<string, object> GetInputArguments(FileInfo fileInfo, Dictionary<string, string> dictionary)
+        {
+            Dictionary<string, object> dic = null;
+            if (dictionary != null)
+            {
+                List<WorkflowArgument> args = XamlHelper.GetArgumentsNames(fileInfo.FullName);
+                dic = XamlHelper.ConvertDictionary(dictionary, args);
+            }
+            return dic;
         }
         
         /// <summary>
@@ -143,7 +168,9 @@ namespace iiBee.RunTime
 
         /// <summary>
         /// In Guest Mode no reboots are executed, also no registry changes are done.
-        /// Application only return exit codes, the Program that starts wBee musst handle the reboots according to it's exit codes.
+        /// Application only return exit co
+        /// 
+        /// des, the Program that starts wBee musst handle the reboots according to it's exit codes.
         /// </summary>
         /// <returns>Returns true if Guest Mode is active.</returns>
         private static bool InGuestMode()

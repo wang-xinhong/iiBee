@@ -1,4 +1,5 @@
 ﻿using iiBee.RunTime.WorkflowHandling;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using Xunit;
@@ -68,6 +69,33 @@ namespace iiBee.RunTime.Tests
                 new FileInfo(@".\TestResources\RebootWorkflow.xaml"), true);
             reaction = wfRunner.RunWorkflow();
             Assert.Equal<ExitReaction>(ExitReaction.Finished, reaction);
+        }
+
+        [Fact]
+        public void InputReachWorkflowTest()
+        {
+            IDictionary<string, object> input = new Dictionary<string, object>()
+            {
+                { "IntInput" , 100 },
+                { "StringInput" , "HelloWorld" },
+                { "BoolInput" , true }
+            };
+
+            WorkflowRunner wfRunner = new WorkflowRunner(
+                new FileInfo(@".\TestResources\InputWorkflow.xaml"), false, input);
+            
+            StringWriter writer = new StringWriter();
+            wfRunner.WorkflowApp.Extensions.Add(writer);
+
+            ExitReaction reaction = wfRunner.RunWorkflow();
+            Assert.Equal<ExitReaction>(ExitReaction.Finished, reaction);
+
+            wfRunner.WorkflowApp.Completed += (e) =>
+            {
+                Assert.Equal<int>(100, (int)e.Outputs["IntOutput"]);
+                Assert.Equal<string>("HelloWorld", (string)e.Outputs["StringOutput"]);
+                Assert.Equal<bool>(true, (bool)e.Outputs["BoolOutput"]);
+            };
         }
     }
 }
