@@ -19,6 +19,8 @@ namespace iiBee.RunTime
 
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             try
             {
                 StartExecution(args);
@@ -27,6 +29,13 @@ namespace iiBee.RunTime
             {
                 log.Error(ex.Message);
             }
+        }
+
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception ex = e.ExceptionObject as Exception;
+            log.Fatal(ex.Message);
+            Environment.Exit(ExitCodes.ApplicationError);
         }
 
         private static void StartExecution(string[] args)

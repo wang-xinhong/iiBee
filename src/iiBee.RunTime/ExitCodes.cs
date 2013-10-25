@@ -18,5 +18,9 @@ namespace iiBee.RunTime
         /// </summary>
         public const int FinishedSuccessfully = 1;
 
+        /// <summary>
+        /// Use this exitcode if applilcation has stopped because of an unhandeled exception.
+        /// </summary>
+        public const int ApplicationError = -9;
     }
 }

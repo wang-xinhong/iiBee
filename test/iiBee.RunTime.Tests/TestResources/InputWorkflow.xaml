@@ -106,21 +106,39 @@
         </InArgument>
       </Assign.Value>
     </Assign>
-    <sads:DebugSymbol.Symbol>d2JDOlxVc2Vyc1xrb2dsZXJhclxEb2N1bWVudHNcR2l0SHViXGlpQmVlXHRlc3RcaWlCZWUuUnVuVGltZS5UZXN0c1xUZXN0UmVzb3VyY2VzXElucHV0V29ya2Zsb3cueGFtbApIA24OAgEBSQVUDgIBIFUFYA4CARFhBWwOAgECUQtRUAIBKEwLTFkCASFdC11UAgEZWAtYXQIBEmkLaVMCAQpkC2RcAgED</sads:DebugSymbol.Symbol>
+    <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_1">
+      <InArgument x:TypeArguments="x:String">
+        <mca:CSharpValue x:TypeArguments="x:String">"Int=" + IntInput.ToString()</mca:CSharpValue>
+      </InArgument>
+    </WriteLine>
+    <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_2">
+      <InArgument x:TypeArguments="x:String">
+        <mca:CSharpValue x:TypeArguments="x:String">"Bool="+ BoolInput.ToString()</mca:CSharpValue>
+      </InArgument>
+    </WriteLine>
+    <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_3">
+      <InArgument x:TypeArguments="x:String">
+        <mca:CSharpValue x:TypeArguments="x:String">"String=" + StringInput</mca:CSharpValue>
+      </InArgument>
+    </WriteLine>
+    <sads:DebugSymbol.Symbol>d2hDOlxVc2Vyc1xrb2dsZXJhclxEb2N1bWVudHNcR2l0SHViXGJlZS1wcm9qZWN0XHRlc3RcaWlCZWUuUnVuVGltZS5UZXN0c1xUZXN0UmVzb3VyY2VzXElucHV0V29ya2Zsb3cueGFtbBBIA30OAgEBSQVUDgIBOFUFYA4CASlhBWwOAgEabQVxEQIBEnIFdhECAQp3BXsRAgECUQtRUAIBQEwLTFkCATldC11UAgExWAtYXQIBKmkLaVMCASJkC2RcAgEbbwlvYwIBE3QJdGQCAQt5CXleAgED</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
       <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,62" />
       <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,62" />
       <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="242,62" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="264,390">
+      <sap2010:ViewStateData Id="WriteLine_1" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="WriteLine_2" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="WriteLine_3" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="264,696">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="iiBee.RunTime.Tests.TestResources.InputWorkflow_1" sap:VirtualizedContainerService.HintSize="304,470" />
+      <sap2010:ViewStateData Id="iiBee.RunTime.Tests.TestResources.InputWorkflow_1" sap:VirtualizedContainerService.HintSize="304,776" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

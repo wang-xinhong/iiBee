@@ -22,6 +22,7 @@
       <AssemblyReference>Microsoft.CSharp</AssemblyReference>
       <AssemblyReference>System</AssemblyReference>
       <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Configuration</AssemblyReference>
       <AssemblyReference>System.Data</AssemblyReference>
       <AssemblyReference>System.Drawing</AssemblyReference>
       <AssemblyReference>System.ServiceModel</AssemblyReference>
@@ -39,30 +40,32 @@
       <AssemblyReference>Microsoft.VisualStudio.TestTools.UITest.Common</AssemblyReference>
       <AssemblyReference>Microsoft.VisualStudio.TestTools.UITest.Extension</AssemblyReference>
       <AssemblyReference>Microsoft.VisualStudio.TestTools.UITesting</AssemblyReference>
-      <AssemblyReference>iiBee.RunTime.Library</AssemblyReference>
-      <AssemblyReference>iiBee.RunTime</AssemblyReference>
+      <AssemblyReference>wBee.Library</AssemblyReference>
+      <AssemblyReference>wBee</AssemblyReference>
       <AssemblyReference>System.Core</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
       <AssemblyReference>iiBee.RunTime.Tests</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <Sequence sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <WriteLine Text="Started RebootWorkflow" sap2010:WorkflowViewState.IdRef="WriteLine_2" />
     <irla:ContinueAfterReboot sap2010:WorkflowViewState.IdRef="ContinueAfterReboot_1" />
-    <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="Finished" />
-    <sads:DebugSymbol.Symbol>d2NDOlxVc2Vyc1xrb2dsZXJhclxEb2N1bWVudHNcR2l0SHViXGlpQmVlXHRlc3RcaWlCZWUuUnVuVGltZS5UZXN0c1xUZXN0UmVzb3VyY2VzXFJlYm9vdFdvcmtmbG93LnhhbWwEMQM1DgIBATIFMlkCAQQzBTNQAgECM0MzTQIBAw==</sads:DebugSymbol.Symbol>
+    <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="Finished with RebootWorkflow" />
+    <sads:DebugSymbol.Symbol>d2lDOlxVc2Vyc1xrb2dsZXJhclxEb2N1bWVudHNcR2l0SHViXGJlZS1wcm9qZWN0XHRlc3RcaWlCZWUuUnVuVGltZS5UZXN0c1xUZXN0UmVzb3VyY2VzXFJlYm9vdFdvcmtmbG93LnhhbWwGMgM3DgIBATMFM14CAQU0BTRZAgEENQU1ZAIBAjMVMy0CAQY1QzVhAgED</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="WriteLine_2" sap:VirtualizedContainerService.HintSize="211,61" />
       <sap2010:ViewStateData Id="ContinueAfterReboot_1" sap:VirtualizedContainerService.HintSize="211,22" />
       <sap2010:ViewStateData Id="WriteLine_1" sap:VirtualizedContainerService.HintSize="211,62" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="233,248">
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="233,349">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="iiBee.RunTime.Tests.TestResources.RebootWorkflow_1" sap:VirtualizedContainerService.HintSize="273,328" />
+      <sap2010:ViewStateData Id="iiBee.RunTime.Tests.TestResources.RebootWorkflow_1" sap:VirtualizedContainerService.HintSize="273,429" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
