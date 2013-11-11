@@ -10,10 +10,30 @@ namespace iiBee.RunTime
 {
     public class Options
     {
-        [HelpOption]
-        public string GetUsage()
+        [VerbOption("run", HelpText="Run an workflow.")]
+        public RunSubOptions RunVerb { get; set; }
+
+        [VerbOption("resume", HelpText = "Resume an rebooted workflow.")]
+        public ResumeSubOptions ResumeVerb { get; set; }
+
+        [HelpVerbOption]
+        public string GetUsage(string verb)
         {
-            return HelpText.AutoBuild(this);
+            return HelpText.AutoBuild(this, verb);
         }
+    }
+
+    public class RunSubOptions
+    {
+        [Option('f', "file", HelpText = "Workflow xaml file to execute.", Required = true)]
+        public string WorkingFile { get; set; }
+
+        [Option('i', "input", HelpText = "Set input of workflow. Example: \"{'name':'value', 'text':'value'}\"")]
+        public string InputParameters { get; set; }
+    }
+
+    public class ResumeSubOptions
+    {
+
     }
 }
