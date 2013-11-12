@@ -1,5 +1,7 @@
 ﻿using NLog;
+using System;
 using System.IO;
+using System.Threading;
 
 namespace iiBee.RunTime
 {
@@ -23,9 +25,11 @@ namespace iiBee.RunTime
             get 
             {
                 FileInfo[] files = _StoreDirectory.GetFiles("*.xaml", SearchOption.TopDirectoryOnly);
+                if (files.Length == 1)
+                    return files[0];
                 if (files.Length > 0)
                 {
-                    return files[0];
+                    throw new Exception("There are more than one stored workflow in directory " + _StoreDirectory.FullName);
                 }
                 else
                 {
@@ -55,7 +59,14 @@ namespace iiBee.RunTime
             if (WorkflowIsStored())
             {
                 log.Debug("Deleting stored Workflow");
-                StoredWorkflowFile.Delete();
+                try
+                {
+                    StoredWorkflowFile.Delete();
+                }
+                catch (Exception ex)
+                {
+                    log.Error(ex.Message);
+                }
             }
         }
 

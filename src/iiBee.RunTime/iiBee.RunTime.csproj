@@ -112,7 +112,6 @@
     <Compile Include="..\..\common\CommonVersionInfo.cs">
       <Link>Properties\CommonVersionInfo.cs</Link>
     </Compile>
-    <Compile Include="StartParameters.cs" />
     <Compile Include="TemporaryStorage.cs" />
     <Compile Include="WorkflowHandling\Extensions\LogParticipant.cs" />
     <Compile Include="WorkflowHandling\Extensions\LogWriter.cs" />

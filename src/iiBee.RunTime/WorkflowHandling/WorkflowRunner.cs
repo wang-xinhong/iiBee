@@ -84,6 +84,14 @@ namespace iiBee.RunTime.WorkflowHandling
             log.Trace("Constructor WorkflowRunner ... done");
         }
 
+        public static void LoadAssemblies(FileInfo[] assemblies)
+        {
+            foreach (FileInfo assembly in assemblies)
+            {
+                Assembly.LoadFrom(assembly.FullName);
+            }
+        }
+
         public ExitReaction RunWorkflow()
         {
             ExitReaction ret = ExitReaction.Finished;

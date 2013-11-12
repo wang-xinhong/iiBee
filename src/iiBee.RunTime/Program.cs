@@ -1,6 +1,7 @@
 ﻿using iiBee.RunTime.Helper;
 using iiBee.RunTime.WorkflowHandling;
 using Microsoft.Win32;
+using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -21,14 +22,66 @@ namespace iiBee.RunTime
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            try
+            LoadWorkflowLibraryExtensions();
+
+            string invokedVerb = null;
+            object invokedVerbInstance = null;
+
+            var options = new Options();
+            if (!CommandLine.Parser.Default.ParseArguments(args, options,
+              (verb, subOptions) =>
+              {
+                  // if parsing succeeds the verb name and correct instance
+                  // will be passed to onVerbCommand delegate (string,object)
+                  invokedVerb = verb;
+                  invokedVerbInstance = subOptions;
+              }))
             {
-                StartExecution(args);
+                Environment.Exit(ExitCodes.HaveDoneNothing);
             }
-            catch (Exception ex)
+
+            WorkflowRunner wfRunner = null;
+
+            if (invokedVerb == "run")
             {
-                log.Error(ex.Message);
+                var runSubOptions = (RunSubOptions)invokedVerbInstance;
+
+                Dictionary<string, string> inputs = null;
+                if (runSubOptions.InputParameters != null)
+                {
+                    try
+                    {
+                        inputs = JsonConvert.DeserializeObject<Dictionary<string, string>>(runSubOptions.InputParameters);
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Error("Failed to convert input paramters: " + ex.Message);
+                        Environment.Exit(ExitCodes.InputError);
+                    }
+                }
+                FileInfo workflow = new FileInfo(runSubOptions.WorkingFile);
+                wfRunner = CreateWorkflowRunnerForStart(workflow, inputs);
             }
+            else if(invokedVerb == "resume")
+            {
+                var resumeSubOptions = (ResumeSubOptions)invokedVerbInstance;
+
+                wfRunner = CreateWorkflowRunnerForResume();
+            }
+
+            StartWorkflow(wfRunner);
+        }
+
+        /// <summary>
+        /// Load Assemblies for Worklow Runner
+        /// </summary>
+        private static void LoadWorkflowLibraryExtensions()
+        {
+            DirectoryInfo extDirectory = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["WorkflowLibraries"]));
+            if (!extDirectory.Exists)
+                return;
+
+            WorkflowRunner.LoadAssemblies(extDirectory.GetFiles("*.dll", SearchOption.AllDirectories));
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -38,43 +91,48 @@ namespace iiBee.RunTime
             Environment.Exit(ExitCodes.ApplicationError);
         }
 
-        private static void StartExecution(string[] args)
+        private static WorkflowRunner CreateWorkflowRunnerForStart(FileInfo workflowFile, Dictionary<string, string> inputs)
         {
-            StartParameters startParams = new StartParameters(args);
-
             WorkflowRunner wfRunner = null;
-            if (!startParams.HasParameters && storage.WorkflowIsStored())
-            {
-                // WBee returns from an reboot/restart
-                if (!InGuestMode())
-                {
-                    //Remove AutoLogon after Start, if it exists
-                    DisableAutoLogon();
-                    //Remove AutoStart entry after Start, if it exists
-                    DisableAutoStart();
-                }
-                else
-                {
-                    log.Info("Guest Mode active: WBee will not change registry or start reboots.");
-                }
+            storage.StoreWorkflow(workflowFile);
+            Dictionary<string, object> parameters = GetInputArguments(storage.StoredWorkflowFile, inputs);
+            wfRunner = new WorkflowRunner(storage.StoredWorkflowFile, false, parameters);
 
-                FileInfo wfFile = storage.StoredWorkflowFile;
-                log.Info("Found persisted workflow file[" + wfFile.FullName + "]");
+            return wfRunner;
+        }
 
-                wfRunner = new WorkflowRunner(wfFile, true);
-            }
-            else if (startParams.HasParameters)
+        private static WorkflowRunner CreateWorkflowRunnerForResume()
+        {
+            WorkflowRunner wfRunner = null;
+
+            // WBee returns from an reboot/restart
+            if (!InGuestMode())
             {
-                storage.StoreWorkflow(startParams.WorkflowFile);
-                Dictionary<string, object> input = GetInputArguments(storage.StoredWorkflowFile, startParams.InputArguments);
-                wfRunner = new WorkflowRunner(storage.StoredWorkflowFile, false, input);
+                //Remove AutoLogon after Start, if it exists
+                DisableAutoLogon();
+                //Remove AutoStart entry after Start, if it exists
+                DisableAutoStart();
             }
             else
             {
-                log.Info("No workflow file to execute, stopping application");
-                Environment.Exit(ExitCodes.HaveDoneNothing);
+                log.Info("Guest Mode active: WBee will not change registry or start reboots.");
             }
 
+            FileInfo wfFile = storage.StoredWorkflowFile;
+            if (!wfFile.Exists)
+            {
+                log.Warn("There is nothing to resume");
+                Environment.Exit(ExitCodes.HaveDoneNothing);
+            }
+            log.Info("Found persisted workflow file[" + wfFile.FullName + "]");
+
+            wfRunner = new WorkflowRunner(wfFile, true);
+
+            return wfRunner;
+        }
+
+        private static void StartWorkflow(WorkflowRunner wfRunner)
+        {
             ExitReaction reaction = wfRunner.RunWorkflow();
             if (reaction == ExitReaction.Reboot)
             {
@@ -90,7 +148,6 @@ namespace iiBee.RunTime
                 Environment.Exit(ExitCodes.FinishedSuccessfully);
             }
         }
-
 
         private static Dictionary<string, object> GetInputArguments(FileInfo fileInfo, Dictionary<string, string> dictionary)
         {

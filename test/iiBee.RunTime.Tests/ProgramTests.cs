@@ -15,13 +15,20 @@ namespace iiBee.RunTime.Tests
     public class ProgramTests : IUseFixture<ProgramTests.TestContext>, IDisposable
     {
         private TestContext _Context = null;
+        private string ApplicationOutput = string.Empty;
 
         public void SetFixture(ProgramTests.TestContext data)
         {
             this._Context = data;
 
             // Clear string builder
-            _Context.TestingSB.Remove(0, _Context.TestingSB.Length);
+            this.ApplicationOutput = string.Empty;
+
+            //Delete Test Data
+            if (Directory.Exists(@".\dat\"))
+                Directory.Delete(@".\dat\", true);
+            if (Directory.Exists(@".\tmp\"))
+                Directory.Delete(@".\tmp\", true);
         }
         
         // Test TearDown 
@@ -57,8 +64,13 @@ namespace iiBee.RunTime.Tests
             proc.Start();
             proc.WaitForExit();
             // Get output to testing console.
-            Console.WriteLine(proc.StandardOutput.ReadToEnd());
-            Console.Write(proc.StandardError.ReadToEnd());
+            string stdout = proc.StandardOutput.ReadToEnd();
+            string stderr = proc.StandardError.ReadToEnd();
+
+            this.ApplicationOutput += stdout + Environment.NewLine + stderr;
+
+            Console.WriteLine(stdout);
+            Console.Write(stderr);
 
             // Return exit code
             return proc.ExitCode;
@@ -73,7 +85,7 @@ namespace iiBee.RunTime.Tests
                 StartConsoleApplication(""));
 
             // Check that help information shown correctly.
-            Assert.True(_Context.TestingSB.ToString().Contains(new Options().GetUsage()));
+            Assert.True(this.ApplicationOutput.Contains("Copyright"));
         }
 
         [Fact]
@@ -83,7 +95,7 @@ namespace iiBee.RunTime.Tests
                 ExitCodes.FinishedSuccessfully, 
                 StartConsoleApplication("run -f \".\\TestResources\\SimpleWorkflow.xaml\""));
 
-            Assert.True(_Context.TestingSB.ToString().Contains("Finished with SimpleWorkflow"));
+            Assert.True(this.ApplicationOutput.Contains("Finished with SimpleWorkflow"));
         }
 
         [Fact]
@@ -93,9 +105,9 @@ namespace iiBee.RunTime.Tests
                 ExitCodes.FinishedSuccessfully,
                 StartConsoleApplication("run -f \".\\TestResources\\InputWorkflow.xaml\" -i \"{'IntInput':'10', 'BoolInput':'true', 'StringInput':'Test' }\""));
 
-            Assert.True(_Context.TestingSB.ToString().Contains("Int=10"));
-            Assert.True(_Context.TestingSB.ToString().Contains("Bool=true"));
-            Assert.True(_Context.TestingSB.ToString().Contains("String=Test"));
+            Assert.True(this.ApplicationOutput.Contains("Int=10"));
+            Assert.True(this.ApplicationOutput.Contains("Bool=True"));
+            Assert.True(this.ApplicationOutput.Contains("String=Test"));
         }
 
         [Fact]
@@ -104,12 +116,12 @@ namespace iiBee.RunTime.Tests
             Assert.Equal<int>(
                 ExitCodes.ClosedForReboot,
                 StartConsoleApplication("run -f \".\\TestResources\\RebootWorkflow.xaml\""));
-            Assert.True(_Context.TestingSB.ToString().Contains("Started RebootWorkflow"));
+            Assert.True(this.ApplicationOutput.Contains("Started RebootWorkflow"));
 
             Assert.Equal<int>(
                 ExitCodes.FinishedSuccessfully,
                 StartConsoleApplication("resume"));
-            Assert.True(_Context.TestingSB.ToString().Contains("Finished with RebootWorkflow"));
+            Assert.True(this.ApplicationOutput.Contains("Finished with RebootWorkflow"));
         }
 
         [Fact]
@@ -118,14 +130,14 @@ namespace iiBee.RunTime.Tests
             Assert.Equal<int>(
                 ExitCodes.HaveDoneNothing,
                 StartConsoleApplication("resume"));
-            Assert.True(_Context.TestingSB.ToString().Contains("There is nothing to resume"));
+            Assert.True(this.ApplicationOutput.Contains("There is nothing to resume"));
         }
 
         public class TestContext : IDisposable
         {
-            public TextWriter NormalOutput;
-            public StringWriter TestingConsole;
-            public StringBuilder TestingSB;
+            public TextWriter NormalOutput { get; set; }
+            public StringWriter TestingConsole { get; set; }
+            public StringBuilder TestingSB { get; set; }
 
             // One Time Setup
             public TestContext()
