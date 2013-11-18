@@ -12,13 +12,32 @@ using System.Reflection;
 
 namespace iiBee.RunTime
 {
-    class Program
+    public class Program
     {
         static Logger log = LogManager.GetCurrentClassLogger();
-        static TemporaryStorage storage = new TemporaryStorage(new DirectoryInfo(
-            ConfigurationManager.AppSettings["TemporaryStorage"]));
+
+        private TemporaryStorage _Storage = null;
 
         static void Main(string[] args)
+        {
+            Program prog = new Program();
+            prog.Run(args);
+        }
+
+        /// <summary>
+        /// Initialize the program
+        /// </summary>
+        public Program()
+        {
+            _Storage = new TemporaryStorage(new DirectoryInfo(
+            ConfigurationManager.AppSettings["TemporaryStorage"]));
+        }
+
+        /// <summary>
+        /// Runs the application to execute an workflow
+        /// </summary>
+        /// <param name="args">Arguments to start an workflow</param>
+        public void Run(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
@@ -62,7 +81,7 @@ namespace iiBee.RunTime
                 FileInfo workflow = new FileInfo(runSubOptions.WorkingFile);
                 wfRunner = CreateWorkflowRunnerForStart(workflow, inputs);
             }
-            else if(invokedVerb == "resume")
+            else if (invokedVerb == "resume")
             {
                 var resumeSubOptions = (ResumeSubOptions)invokedVerbInstance;
 
@@ -75,7 +94,7 @@ namespace iiBee.RunTime
         /// <summary>
         /// Load Assemblies for Worklow Runner
         /// </summary>
-        private static void LoadWorkflowLibraryExtensions()
+        private void LoadWorkflowLibraryExtensions()
         {
             DirectoryInfo extDirectory = new DirectoryInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigurationManager.AppSettings["WorkflowLibraries"]));
             if (!extDirectory.Exists)
@@ -84,24 +103,24 @@ namespace iiBee.RunTime
             WorkflowRunner.LoadAssemblies(extDirectory.GetFiles("*.dll", SearchOption.AllDirectories));
         }
 
-        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Exception ex = e.ExceptionObject as Exception;
             log.Fatal(ex.Message);
             Environment.Exit(ExitCodes.ApplicationError);
         }
 
-        private static WorkflowRunner CreateWorkflowRunnerForStart(FileInfo workflowFile, Dictionary<string, string> inputs)
+        private WorkflowRunner CreateWorkflowRunnerForStart(FileInfo workflowFile, Dictionary<string, string> inputs)
         {
             WorkflowRunner wfRunner = null;
-            storage.StoreWorkflow(workflowFile);
-            Dictionary<string, object> parameters = GetInputArguments(storage.StoredWorkflowFile, inputs);
-            wfRunner = new WorkflowRunner(storage.StoredWorkflowFile, false, parameters);
+            _Storage.StoreWorkflow(workflowFile);
+            Dictionary<string, object> parameters = GetInputArguments(_Storage.StoredWorkflowFile, inputs);
+            wfRunner = new WorkflowRunner(_Storage.StoredWorkflowFile, false, parameters);
 
             return wfRunner;
         }
 
-        private static WorkflowRunner CreateWorkflowRunnerForResume()
+        private WorkflowRunner CreateWorkflowRunnerForResume()
         {
             WorkflowRunner wfRunner = null;
 
@@ -118,7 +137,7 @@ namespace iiBee.RunTime
                 log.Info("Guest Mode active: WBee will not change registry or start reboots.");
             }
 
-            FileInfo wfFile = storage.StoredWorkflowFile;
+            FileInfo wfFile = _Storage.StoredWorkflowFile;
             if (!wfFile.Exists)
             {
                 log.Warn("There is nothing to resume");
@@ -131,7 +150,7 @@ namespace iiBee.RunTime
             return wfRunner;
         }
 
-        private static void StartWorkflow(WorkflowRunner wfRunner)
+        private void StartWorkflow(WorkflowRunner wfRunner)
         {
             ExitReaction reaction = wfRunner.RunWorkflow();
             if (reaction == ExitReaction.Reboot)
@@ -142,14 +161,14 @@ namespace iiBee.RunTime
             }
             else if (reaction == ExitReaction.Finished)
             {
-                storage.RemoveStoredWorkflow();
+                _Storage.RemoveStoredWorkflow();
 
                 log.Info("Finished workflow, application is stopping");
                 Environment.Exit(ExitCodes.FinishedSuccessfully);
             }
         }
 
-        private static Dictionary<string, object> GetInputArguments(FileInfo fileInfo, Dictionary<string, string> dictionary)
+        private Dictionary<string, object> GetInputArguments(FileInfo fileInfo, Dictionary<string, string> dictionary)
         {
             Dictionary<string, object> dic = null;
             if (dictionary != null)
@@ -163,7 +182,7 @@ namespace iiBee.RunTime
         /// <summary>
         /// Execute reboot execution and system preparation.
         /// </summary>
-        private static void SendRebootCommand()
+        private void SendRebootCommand()
         {
             if (InGuestMode())
             {
@@ -183,7 +202,7 @@ namespace iiBee.RunTime
         /// <summary>
         /// Enable AutoLogon with default user
         /// </summary>
-        private static void EnableAutoLogon()
+        private void EnableAutoLogon()
         {
             log.Debug("Add autologon to registry ...");
             RegistryKey myKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\winlogon", true);
@@ -198,7 +217,7 @@ namespace iiBee.RunTime
         /// <summary>
         /// Disable AutoLogon and remove default user from registry
         /// </summary>
-        private static void DisableAutoLogon()
+        private void DisableAutoLogon()
         {
             log.Debug("Remove autologon from registry ...");
             RegistryKey myKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\winlogon", true);
@@ -213,7 +232,7 @@ namespace iiBee.RunTime
         /// <summary>
         /// Set an AutoStart Entry in Registry for this Application
         /// </summary>
-        private static void EnableAutoStart()
+        private void EnableAutoStart()
         {
             log.Debug("Add wbee autostart entry in registry ...");
             RegistryKey myKey = Registry.CurrentUser.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\wBee");
@@ -225,7 +244,7 @@ namespace iiBee.RunTime
         /// <summary>
         /// Remove the AutoStart Entry for this Application
         /// </summary>
-        private static void DisableAutoStart()
+        private void DisableAutoStart()
         {
             log.Debug("Remove wbee autostart entry from registry ...");
             Registry.CurrentUser.DeleteSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\\wBee", false);
@@ -239,7 +258,7 @@ namespace iiBee.RunTime
         /// des, the Program that starts wBee musst handle the reboots according to it's exit codes.
         /// </summary>
         /// <returns>Returns true if Guest Mode is active.</returns>
-        private static bool InGuestMode()
+        private bool InGuestMode()
         {
             try
             {

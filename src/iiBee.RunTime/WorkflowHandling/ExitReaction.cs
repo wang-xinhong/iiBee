@@ -1,5 +1,5 @@
 ﻿
-namespace iiBee.RunTime
+namespace iiBee.RunTime.WorkflowHandling
 {
     public enum ExitReaction
     {
