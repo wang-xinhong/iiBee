@@ -1,4 +1,8 @@
-﻿using iiBee.RunTime.WorkflowHandling;
+﻿/*  iiBee - Automation with reboots
+    Copyright (C) 2013 AbraxasCSharp (@github)
+ */ 
+
+using iiBee.RunTime.WorkflowHandling;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;

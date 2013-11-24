@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 #endif
 
 [assembly: AssemblyProduct("iiBee")]
-[assembly: AssemblyCopyright("Copyright 2013 Armin Kogler")]
+[assembly: AssemblyCopyright("Copyright 2013 AbraxasCSharp")]
 
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(false)]

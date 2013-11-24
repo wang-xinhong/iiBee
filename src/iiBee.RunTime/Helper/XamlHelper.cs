@@ -1,4 +1,8 @@
-﻿using System.Activities;
+﻿/*  iiBee - Automation with reboots
+    Copyright (C) 2013 AbraxasCSharp (@github)
+ */ 
+
+using System.Activities;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -1,4 +1,8 @@
-﻿using iiBee.RunTime.Library.Activities;
+﻿/*  iiBee - Automation with reboots
+    Copyright (C) 2013 AbraxasCSharp (@github)
+ */ 
+
+using iiBee.RunTime.Library.Activities;
 using iiBee.RunTime.WorkflowHandling.Extensions;
 using iiBee.RunTime.WorkflowHandling.XmlInstanceStore;
 using NLog;
@@ -154,14 +158,15 @@ namespace iiBee.RunTime.WorkflowHandling
             XamlXmlReaderSettings settings = new XamlXmlReaderSettings();
             settings.LocalAssembly = Assembly.GetExecutingAssembly();
 
-            ActivityXamlServicesSettings activitySettings = new ActivityXamlServicesSettings
-            {
-                CompileExpressions = true
-            };
+            //Only .net 4.5
+            //ActivityXamlServicesSettings activitySettings = new ActivityXamlServicesSettings
+            //{
+            //    CompileExpressions = true
+            //};
 
             using (XamlXmlReader reader = new XamlXmlReader(workflow, settings))
             {
-                DynamicActivity activity = ActivityXamlServices.Load(reader, activitySettings) as DynamicActivity;
+                DynamicActivity activity = ActivityXamlServices.Load(reader) as DynamicActivity;
                 log.Debug("Loading Workflow ... done");
 
                 return activity;

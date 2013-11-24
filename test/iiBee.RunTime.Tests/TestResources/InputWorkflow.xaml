@@ -1,12 +1,24 @@
-﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="iiBee.RunTime.Tests.TestResources.InputWorkflow"
+﻿<Activity mc:Ignorable="sads sap" x:Class="iiBee.RunTime.Tests.TestResources.InputWorkflow"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
- xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:mv="clr-namespace:Microsoft.VisualBasic;assembly=System"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:s1="clr-namespace:System;assembly=System"
+ xmlns:s2="clr-namespace:System;assembly=System.Xml"
+ xmlns:s3="clr-namespace:System;assembly=System.Core"
+ xmlns:s4="clr-namespace:System;assembly=System.ServiceModel"
+ xmlns:sa="clr-namespace:System.Activities;assembly=System.Activities"
+ xmlns:sad="clr-namespace:System.Activities.Debugger;assembly=System.Activities"
  xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
  xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
- xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
- xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
- xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System"
+ xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System.ServiceModel"
+ xmlns:scg2="clr-namespace:System.Collections.Generic;assembly=System.Core"
+ xmlns:scg3="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:sl="clr-namespace:System.Linq;assembly=System.Core"
+ xmlns:st="clr-namespace:System.Text;assembly=mscorlib"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="IntInput" Type="InArgument(x:Int32)">
@@ -28,117 +40,40 @@
     <x:Property Name="StringOutput" Type="OutArgument(x:String)" />
     <x:Property Name="BoolOutput" Type="OutArgument(x:Boolean)" />
   </x:Members>
-  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
-  <sap2010:WorkflowViewState.IdRef>iiBee.RunTime.Tests.TestResources.InputWorkflow_1</sap2010:WorkflowViewState.IdRef>
-  <TextExpression.NamespacesForImplementation>
-    <sco:Collection x:TypeArguments="x:String">
-      <x:String>System</x:String>
-      <x:String>System.Collections.Generic</x:String>
-      <x:String>System.Data</x:String>
-      <x:String>System.Linq</x:String>
-      <x:String>System.Text</x:String>
-    </sco:Collection>
-  </TextExpression.NamespacesForImplementation>
-  <TextExpression.ReferencesForImplementation>
-    <sco:Collection x:TypeArguments="AssemblyReference">
-      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
-      <AssemblyReference>System</AssemblyReference>
-      <AssemblyReference>System.Activities</AssemblyReference>
-      <AssemblyReference>System.Configuration</AssemblyReference>
-      <AssemblyReference>System.Data</AssemblyReference>
-      <AssemblyReference>System.Drawing</AssemblyReference>
-      <AssemblyReference>System.ServiceModel</AssemblyReference>
-      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
-      <AssemblyReference>System.Windows.Forms</AssemblyReference>
-      <AssemblyReference>System.Xaml</AssemblyReference>
-      <AssemblyReference>System.Xml</AssemblyReference>
-      <AssemblyReference>System.Xml.Linq</AssemblyReference>
-      <AssemblyReference>UIAutomationTypes</AssemblyReference>
-      <AssemblyReference>WindowsBase</AssemblyReference>
-      <AssemblyReference>xunit</AssemblyReference>
-      <AssemblyReference>xunit.extensions</AssemblyReference>
-      <AssemblyReference>Microsoft.VisualStudio.QualityTools.UnitTestFramework</AssemblyReference>
-      <AssemblyReference>Microsoft.VisualStudio.QualityTools.CodedUITestFramework</AssemblyReference>
-      <AssemblyReference>Microsoft.VisualStudio.TestTools.UITest.Common</AssemblyReference>
-      <AssemblyReference>Microsoft.VisualStudio.TestTools.UITest.Extension</AssemblyReference>
-      <AssemblyReference>Microsoft.VisualStudio.TestTools.UITesting</AssemblyReference>
-      <AssemblyReference>wBee.Library</AssemblyReference>
-      <AssemblyReference>wBee</AssemblyReference>
-      <AssemblyReference>System.Core</AssemblyReference>
-      <AssemblyReference>mscorlib</AssemblyReference>
-      <AssemblyReference>iiBee.RunTime.Tests</AssemblyReference>
-    </sco:Collection>
-  </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_1">
-    <Assign sap2010:WorkflowViewState.IdRef="Assign_1">
+  <sap:VirtualizedContainerService.HintSize>304,767</sap:VirtualizedContainerService.HintSize>
+  <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
+  <Sequence sad:XamlDebuggerXmlReader.FileName="C:\Users\koglerar\Documents\GitHub\iiBee\test\iiBee.RunTime.Tests\TestResources\InputWorkflow.xaml" sap:VirtualizedContainerService.HintSize="264,687">
+    <sap:WorkflowViewStateService.ViewState>
+      <scg3:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+      </scg3:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <Assign sap:VirtualizedContainerService.HintSize="242,60">
       <Assign.To>
-        <OutArgument x:TypeArguments="x:Int32">
-          <mca:CSharpReference x:TypeArguments="x:Int32">IntOutput</mca:CSharpReference>
-        </OutArgument>
+        <OutArgument x:TypeArguments="x:Int32">[IntOutput]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Int32">
-          <mca:CSharpValue x:TypeArguments="x:Int32">IntInput</mca:CSharpValue>
-        </InArgument>
+        <InArgument x:TypeArguments="x:Int32">[IntInput]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
+    <Assign sap:VirtualizedContainerService.HintSize="242,60">
       <Assign.To>
-        <OutArgument x:TypeArguments="x:String">
-          <mca:CSharpReference x:TypeArguments="x:String">StringOutput</mca:CSharpReference>
-        </OutArgument>
+        <OutArgument x:TypeArguments="x:String">[StringOutput]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:String">
-          <mca:CSharpValue x:TypeArguments="x:String">StringInput</mca:CSharpValue>
-        </InArgument>
+        <InArgument x:TypeArguments="x:String">[StringInput]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign sap2010:WorkflowViewState.IdRef="Assign_3">
+    <Assign sap:VirtualizedContainerService.HintSize="242,60">
       <Assign.To>
-        <OutArgument x:TypeArguments="x:Boolean">
-          <mca:CSharpReference x:TypeArguments="x:Boolean">BoolOutput</mca:CSharpReference>
-        </OutArgument>
+        <OutArgument x:TypeArguments="x:Boolean">[BoolOutput]</OutArgument>
       </Assign.To>
       <Assign.Value>
-        <InArgument x:TypeArguments="x:Boolean">
-          <mca:CSharpValue x:TypeArguments="x:Boolean">BoolInput</mca:CSharpValue>
-        </InArgument>
+        <InArgument x:TypeArguments="x:Boolean">[BoolInput]</InArgument>
       </Assign.Value>
     </Assign>
-    <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_1">
-      <InArgument x:TypeArguments="x:String">
-        <mca:CSharpValue x:TypeArguments="x:String">"Int=" + IntInput.ToString()</mca:CSharpValue>
-      </InArgument>
-    </WriteLine>
-    <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_2">
-      <InArgument x:TypeArguments="x:String">
-        <mca:CSharpValue x:TypeArguments="x:String">"Bool="+ BoolInput.ToString()</mca:CSharpValue>
-      </InArgument>
-    </WriteLine>
-    <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_3">
-      <InArgument x:TypeArguments="x:String">
-        <mca:CSharpValue x:TypeArguments="x:String">"String=" + StringInput</mca:CSharpValue>
-      </InArgument>
-    </WriteLine>
-    <sads:DebugSymbol.Symbol>d2hDOlxVc2Vyc1xrb2dsZXJhclxEb2N1bWVudHNcR2l0SHViXGJlZS1wcm9qZWN0XHRlc3RcaWlCZWUuUnVuVGltZS5UZXN0c1xUZXN0UmVzb3VyY2VzXElucHV0V29ya2Zsb3cueGFtbBBIA30OAgEBSQVUDgIBOFUFYA4CASlhBWwOAgEabQVxEQIBEnIFdhECAQp3BXsRAgECUQtRUAIBQEwLTFkCATldC11UAgExWAtYXQIBKmkLaVMCASJkC2RcAgEbbwlvYwIBE3QJdGQCAQt5CXleAgED</sads:DebugSymbol.Symbol>
+    <WriteLine sap:VirtualizedContainerService.HintSize="242,61" Text="[&quot;Int=&quot; &amp; IntInput.ToString()]" />
+    <WriteLine sap:VirtualizedContainerService.HintSize="242,61" Text="[&quot;String=&quot; &amp; StringInput.ToString()]" />
+    <WriteLine sap:VirtualizedContainerService.HintSize="242,61" Text="[&quot;Bool=&quot; &amp; BoolInput.ToString()]" />
   </Sequence>
-  <sap2010:WorkflowViewState.ViewStateManager>
-    <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,62" />
-      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,62" />
-      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="242,62" />
-      <sap2010:ViewStateData Id="WriteLine_1" sap:VirtualizedContainerService.HintSize="242,62" />
-      <sap2010:ViewStateData Id="WriteLine_2" sap:VirtualizedContainerService.HintSize="242,62" />
-      <sap2010:ViewStateData Id="WriteLine_3" sap:VirtualizedContainerService.HintSize="242,62" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="264,696">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="iiBee.RunTime.Tests.TestResources.InputWorkflow_1" sap:VirtualizedContainerService.HintSize="304,776" />
-    </sap2010:ViewStateManager>
-  </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

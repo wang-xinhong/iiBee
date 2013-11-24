@@ -1,66 +1,22 @@
-﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="iiBee.RunTime.Tests.TestResources.SimpleWorkflow" sap2010:ExpressionActivityEditor.ExpressionActivityEditor="C#" sap2010:WorkflowViewState.IdRef="iiBee.RunTime.Tests.TestResources.SimpleWorkflow_1"
+﻿<Activity mc:Ignorable="sap sads" x:Class="iiBee.RunTime.Tests.TestResources.SimpleWorkflow" sap:VirtualizedContainerService.HintSize="251,141" mva:VisualBasic.Settings="Assembly references and imported namespaces for internal implementation"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mv="clr-namespace:Microsoft.VisualBasic;assembly=System"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:s1="clr-namespace:System;assembly=System"
+ xmlns:s2="clr-namespace:System;assembly=System.Xml"
+ xmlns:s3="clr-namespace:System;assembly=System.Core"
+ xmlns:sad="clr-namespace:System.Activities.Debugger;assembly=System.Activities"
  xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
  xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
- xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
- xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
- xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System"
+ xmlns:scg1="clr-namespace:System.Collections.Generic;assembly=System.ServiceModel"
+ xmlns:scg2="clr-namespace:System.Collections.Generic;assembly=System.Core"
+ xmlns:scg3="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:sl="clr-namespace:System.Linq;assembly=System.Core"
+ xmlns:st="clr-namespace:System.Text;assembly=mscorlib"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <TextExpression.NamespacesForImplementation>
-    <sco:Collection x:TypeArguments="x:String">
-      <x:String>System</x:String>
-      <x:String>System.Collections.Generic</x:String>
-      <x:String>System.Data</x:String>
-      <x:String>System.Linq</x:String>
-      <x:String>System.Text</x:String>
-    </sco:Collection>
-  </TextExpression.NamespacesForImplementation>
-  <TextExpression.ReferencesForImplementation>
-    <sco:Collection x:TypeArguments="AssemblyReference">
-      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
-      <AssemblyReference>System</AssemblyReference>
-      <AssemblyReference>System.Activities</AssemblyReference>
-      <AssemblyReference>System.Configuration</AssemblyReference>
-      <AssemblyReference>System.Data</AssemblyReference>
-      <AssemblyReference>System.Drawing</AssemblyReference>
-      <AssemblyReference>System.ServiceModel</AssemblyReference>
-      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
-      <AssemblyReference>System.Windows.Forms</AssemblyReference>
-      <AssemblyReference>System.Xaml</AssemblyReference>
-      <AssemblyReference>System.Xml</AssemblyReference>
-      <AssemblyReference>System.Xml.Linq</AssemblyReference>
-      <AssemblyReference>UIAutomationTypes</AssemblyReference>
-      <AssemblyReference>WindowsBase</AssemblyReference>
-      <AssemblyReference>xunit</AssemblyReference>
-      <AssemblyReference>xunit.extensions</AssemblyReference>
-      <AssemblyReference>Microsoft.VisualStudio.QualityTools.UnitTestFramework</AssemblyReference>
-      <AssemblyReference>Microsoft.VisualStudio.QualityTools.CodedUITestFramework</AssemblyReference>
-      <AssemblyReference>Microsoft.VisualStudio.TestTools.UITest.Common</AssemblyReference>
-      <AssemblyReference>Microsoft.VisualStudio.TestTools.UITest.Extension</AssemblyReference>
-      <AssemblyReference>Microsoft.VisualStudio.TestTools.UITesting</AssemblyReference>
-      <AssemblyReference>wBee.Library</AssemblyReference>
-      <AssemblyReference>wBee</AssemblyReference>
-      <AssemblyReference>System.Core</AssemblyReference>
-      <AssemblyReference>mscorlib</AssemblyReference>
-      <AssemblyReference>iiBee.RunTime.Tests</AssemblyReference>
-    </sco:Collection>
-  </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_1">
-    <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="Finished with SimpleWorkflow" />
-    <sads:DebugSymbol.Symbol>d2lDOlxVc2Vyc1xrb2dsZXJhclxEb2N1bWVudHNcR2l0SHViXGJlZS1wcm9qZWN0XHRlc3RcaWlCZWUuUnVuVGltZS5UZXN0c1xUZXN0UmVzb3VyY2VzXFNpbXBsZVdvcmtmbG93LnhhbWwDMQM0DgIBATIFMmQCAQIyQzJhAgED</sads:DebugSymbol.Symbol>
-  </Sequence>
-  <sap2010:WorkflowViewState.ViewStateManager>
-    <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="WriteLine_1" sap:VirtualizedContainerService.HintSize="211,62" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="233,186">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="iiBee.RunTime.Tests.TestResources.SimpleWorkflow_1" sap:VirtualizedContainerService.HintSize="273,266" />
-    </sap2010:ViewStateManager>
-  </sap2010:WorkflowViewState.ViewStateManager>
+  <WriteLine sad:XamlDebuggerXmlReader.FileName="C:\Users\koglerar\Documents\GitHub\iiBee\test\iiBee.RunTime.Tests\TestResources\SimpleWorkflow.xaml" sap:VirtualizedContainerService.HintSize="211,61" Text="Finished with SimpleWorkflow" />
 </Activity>

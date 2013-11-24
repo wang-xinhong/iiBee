@@ -1,4 +1,7 @@
-﻿
+﻿/*  iiBee - Automation with reboots
+    Copyright (C) 2013 AbraxasCSharp (@github)
+ */ 
+
 namespace iiBee.RunTime
 {
     public sealed class ExitCodes

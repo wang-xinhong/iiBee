@@ -1,4 +1,6 @@
-﻿//Used this Source: http://www.codeproject.com/Articles/17652/How-to-Test-Console-Applications
+﻿/*  iiBee - Automation with reboots
+    Copyright (C) 2013 AbraxasCSharp (@github)
+ */ 
 
 using iiBee.RunTime.WorkflowHandling;
 using System;
@@ -34,8 +36,7 @@ namespace iiBee.RunTime.Tests
         // Test TearDown 
         public void Dispose()
         {
-            // Verbose output in console
-            _Context.NormalOutput.Write(_Context.TestingSB.ToString());
+            
         }
 
         /// <summary>
@@ -105,9 +106,9 @@ namespace iiBee.RunTime.Tests
                 ExitCodes.FinishedSuccessfully,
                 StartConsoleApplication("run -f \".\\TestResources\\InputWorkflow.xaml\" -i \"{'IntInput':'10', 'BoolInput':'true', 'StringInput':'Test' }\""));
 
-            Assert.True(this.ApplicationOutput.Contains("Int=10"));
-            Assert.True(this.ApplicationOutput.Contains("Bool=True"));
-            Assert.True(this.ApplicationOutput.Contains("String=Test"));
+            Assert.True(this.ApplicationOutput.Contains("Int=10"), "Int Input is not 10");
+            Assert.True(this.ApplicationOutput.Contains("Bool=True"), "Bool Input is not True");
+            Assert.True(this.ApplicationOutput.Contains("String=Test"), "String Input is not \"Test\"");
         }
 
         [Fact]
@@ -135,41 +136,16 @@ namespace iiBee.RunTime.Tests
 
         public class TestContext : IDisposable
         {
-            public TextWriter NormalOutput { get; set; }
-            public StringWriter TestingConsole { get; set; }
-            public StringBuilder TestingSB { get; set; }
-
             // One Time Setup
             public TestContext()
             {
-                // Set current folder to testing folder
-                string assemblyCodeBase =
-                    Assembly.GetExecutingAssembly().CodeBase;
 
-                // Get directory name
-                string dirName = Path.GetDirectoryName(assemblyCodeBase);
-
-                // Remove URL-prefix if it exists
-                if (dirName.StartsWith("file:\\"))
-                    dirName = dirName.Substring(6);
-
-                // Set current folder
-                Environment.CurrentDirectory = dirName;
-
-                // Initialize string builder to replace console
-                this.TestingSB = new StringBuilder();
-                this.TestingConsole = new StringWriter(this.TestingSB);
-
-                //swap normal output console with testing console - to reuse
-                // it later
-                this.NormalOutput = Console.Out;
-                Console.SetOut(this.TestingConsole);
             }
 
             // One Time Teardown
             public void Dispose()
             {
-                Console.SetOut(this.NormalOutput);
+                
             }
         }
     }

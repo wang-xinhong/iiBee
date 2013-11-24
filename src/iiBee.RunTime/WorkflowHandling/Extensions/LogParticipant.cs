@@ -1,4 +1,8 @@
-﻿using NLog;
+﻿/*  iiBee - Automation with reboots
+    Copyright (C) 2013 AbraxasCSharp (@github)
+ */ 
+
+using NLog;
 using System;
 using System.Activities.Tracking;
 using System.Collections.Generic;
